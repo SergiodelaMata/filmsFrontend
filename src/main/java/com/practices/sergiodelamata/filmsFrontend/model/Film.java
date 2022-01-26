@@ -12,23 +12,13 @@ public class Film {
     private String direction;
     private String genres;
     private String synopsis;
-    private byte[] image;
+    private String image;
     private List<Actor> actors = new ArrayList<>();
 
     public Film() {
-        this.idFilm = 0;
-        this.title = "";
-        this.year = 0;
-        this.duration = 0;
-        this.country = "";
-        this.direction = "";
-        this.genres = "";
-        this.synopsis = "";
-        this.image = null;
-        this.actors = null;
     }
 
-    public Film(Integer idFilm, String title, Integer year, Integer duration, String country, String direction, String genres, String synopsis, byte[] image, List<Actor> actors) {
+    public Film(Integer idFilm, String title, Integer year, Integer duration, String country, String direction, String genres, String synopsis, String image, List<Actor> actors) {
         this.idFilm = idFilm;
         this.title = title;
         this.year = year;
@@ -105,11 +95,11 @@ public class Film {
         this.synopsis = synopsis;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

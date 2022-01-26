@@ -9,6 +9,7 @@ public class Actor {
     private String name;
     private Date birthDate;
     private String countryBirth;
+    private String image;
     private List<Film> films = new ArrayList<>();
 
     public Actor() {
@@ -19,11 +20,12 @@ public class Actor {
         this.films = null;
     }
 
-    public Actor(Integer idActor, String name, Date birthDate, String countryBirth, List<Film> films) {
+    public Actor(Integer idActor, String name, Date birthDate, String countryBirth, String image, List<Film> films) {
         this.idActor = idActor;
         this.name = name;
         this.birthDate = birthDate;
         this.countryBirth = countryBirth;
+        this.image = image;
         this.films = films;
     }
 
@@ -57,6 +59,14 @@ public class Actor {
 
     public void setCountryBirth(String countryBirth) {
         this.countryBirth = countryBirth;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public List<Film> getFilms() {
