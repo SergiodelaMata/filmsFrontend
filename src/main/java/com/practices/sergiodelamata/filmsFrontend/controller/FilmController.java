@@ -23,11 +23,18 @@ public class FilmController {
     {
         Pageable pageable = PageRequest.of(page, 5);
         Page<Film> list = filmService.searchAll(pageable);
-        PageRender<Film> pageRender = new PageRender<Film>("/films/list", list);
+        PageRender<Film> pageRender = new PageRender<Film>("/films", list);
 
-        model.addAttribute("title", "Listado de películas");
+        model.addAttribute("title", "FilmingApp | Listado de películas");
         model.addAttribute("listFilms", list);
+        model.addAttribute("page", pageRender);
         return "films";
+    }
+
+    @GetMapping(value = "/goBackMenu")
+    public String goBackMenu(Model model)
+    {
+        return "redirect:/home";
     }
 
     @GetMapping("/new")
@@ -39,23 +46,17 @@ public class FilmController {
         return "films/formFilm";
     }
 
-    @GetMapping("/search")
-    public String searchFilm(Model model)
-    {
-        return "films/searchFilm";
-    }
-
-    @GetMapping("/list")
+    /*@GetMapping("/list/findByTitle")
     public String listFilms(Model model, @RequestParam(name="page", defaultValue = "0") int page)
     {
         Pageable pageable = PageRequest.of(page, 5);
         Page<Film> list = filmService.searchAll(pageable);
         PageRender<Film> pageRender = new PageRender<Film>("/films/list", list);
 
-        model.addAttribute("title", "Listado de películas");
+        model.addAttribute("title", "FilmingApp | Listado de películas");
         model.addAttribute("listFilms", list);
-        return "actors/listActors";
-    }
+        return "films/listByTitle";
+    }*/
 
     @GetMapping("/{idFilm}")
     public String searchFilmById(Model model, @PathVariable("idFilm") Integer idFilm)
@@ -66,7 +67,9 @@ public class FilmController {
     }
 
     @GetMapping("/title")
-    public String searchFilmByTitle(Model model, @RequestParam(name="page", defaultValue = "0") int page, @RequestParam("title") String title)
+    public String searchFilmByTitle(Model model, @RequestParam(name="page", defaultValue = "0") int page,
+                                    @RequestParam("title") String title,
+                                    @RequestParam(name="typeSearch", defaultValue = "title") String typeSearch)
     {
         Pageable pageable = PageRequest.of(page, 5);
         Page<Film> list;
@@ -78,27 +81,33 @@ public class FilmController {
         {
             list = filmService.searchFilmsByTitle(title, pageable);
         }
-        PageRender<Film> pageRender = new PageRender<Film>("/list", list);
-        model.addAttribute("title", "Listado de películas por título");
+        PageRender<Film> pageRender = new PageRender<Film>("/films/title", list);
+        model.addAttribute("title", "FilmingApp | Listado de películas por título");
         model.addAttribute("listFilms", list);
         model.addAttribute("page", pageRender);
+        model.addAttribute("typeSearch", typeSearch);
         return "films/listFilms";
     }
 
     @GetMapping("/year")
-    public String searchFilmByYear(Model model, @RequestParam(name="page", defaultValue = "0") int page, @RequestParam("yearInit") Integer yearInit, @RequestParam("yearEnd") Integer yearEnd)
+    public String searchFilmByYear(Model model, @RequestParam(name="page", defaultValue = "0") int page,
+                                   @RequestParam("yearInit") Integer yearInit, @RequestParam("yearEnd") Integer yearEnd,
+                                   @RequestParam(name="typeSearch", defaultValue = "year") String typeSearch)
     {
         Pageable pageable = PageRequest.of(page, 5);
         Page<Film> list = filmService.searchFilmsByYear(yearInit, yearEnd, pageable);
         PageRender<Film> pageRender = new PageRender<Film>("/list", list);
-        model.addAttribute("title", "Listado de películas por año");
+        model.addAttribute("title", "FilmingApp | Listado de películas por año");
         model.addAttribute("listFilms", list);
         model.addAttribute("page", pageRender);
+        model.addAttribute("typeSearch", typeSearch);
         return "films/listFilms";
     }
 
     @GetMapping("/country")
-    public String searchFilmByCountry(Model model, @RequestParam(name="page", defaultValue = "0") int page, @RequestParam("country") String country)
+    public String searchFilmByCountry(Model model, @RequestParam(name="page", defaultValue = "0") int page,
+                                      @RequestParam("country") String country,
+                                      @RequestParam(name="typeSearch", defaultValue = "country") String typeSearch)
     {
         Pageable pageable = PageRequest.of(page, 5);
         Page<Film> list;
@@ -111,14 +120,17 @@ public class FilmController {
             list = filmService.searchFilmsByCountry(country, pageable);
         }
         PageRender<Film> pageRender = new PageRender<Film>("/list", list);
-        model.addAttribute("title", "Listado de películas por país");
+        model.addAttribute("title", "FilmingApp | Listado de películas por país");
         model.addAttribute("listFilms", list);
         model.addAttribute("page", pageRender);
+        model.addAttribute("typeSearch", typeSearch);
         return "films/listFilms";
     }
 
     @GetMapping("/direction")
-    public String searchFilmByDirection(Model model, @RequestParam(name="page", defaultValue = "0") int page, @RequestParam("direction") String direction)
+    public String searchFilmByDirection(Model model, @RequestParam(name="page", defaultValue = "0") int page,
+                                        @RequestParam("direction") String direction,
+                                        @RequestParam(name="typeSearch", defaultValue = "direction") String typeSearch)
     {
         Pageable pageable = PageRequest.of(page, 5);
         Page<Film> list;
@@ -128,17 +140,20 @@ public class FilmController {
         }
         else
         {
-            list = filmService.searchFilmsByTitle(direction, pageable);
+            list = filmService.searchFilmsByDirection(direction, pageable);
         }
         PageRender<Film> pageRender = new PageRender<Film>("/list", list);
-        model.addAttribute("title", "Listado de películas por su dirección");
+        model.addAttribute("title", "FilmingApp | Listado de películas por su dirección");
         model.addAttribute("listFilms", list);
         model.addAttribute("page", pageRender);
+        model.addAttribute("typeSearch", typeSearch);
         return "films/listFilms";
     }
 
     @GetMapping("/genres")
-    public String searchFilmByGenres(Model model, @RequestParam(name="page", defaultValue = "0") int page, @RequestParam("genres") String genres)
+    public String searchFilmByGenres(Model model, @RequestParam(name="page", defaultValue = "0") int page,
+                                     @RequestParam("genres") String genres,
+                                     @RequestParam(name="typeSearch", defaultValue = "genres") String typeSearch)
     {
         Pageable pageable = PageRequest.of(page, 5);
         Page<Film> list;
@@ -148,12 +163,13 @@ public class FilmController {
         }
         else
         {
-            list = filmService.searchFilmsByTitle(genres, pageable);
+            list = filmService.searchFilmsByGenres(genres, pageable);
         }
         PageRender<Film> pageRender = new PageRender<Film>("/list", list);
-        model.addAttribute("title", "Listado de películas por su género");
+        model.addAttribute("title", "FilmingApp | Listado de películas por su género");
         model.addAttribute("listFilms", list);
         model.addAttribute("page", pageRender);
+        model.addAttribute("typeSearch", typeSearch);
         return "films/listFilms";
     }
 

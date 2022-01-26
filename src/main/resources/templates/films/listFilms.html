@@ -34,15 +34,15 @@
                 <form id="searchFilmForm">
                     <div id="search" class="container card" style="padding-top: 10px; padding-bottom: 10px;">
                         <div>
-                            <input type="radio" id="radioSearchTitle" name="selectSearch" onClick="selectedOption()" value="title" checked = "checked" >
+                            <input type="radio" id="radioSearchTitle" name="selectSearch" onClick="selectedOption()" value="title" th:checked="${typeSearch == 'title'}? checked" >
                             <label for="radioSearchTitle">Búsqueda por título</label>
-                            <input type="radio" id="radioSearchYear" name="selectSearch" onClick="selectedOption()" value="year">
+                            <input type="radio" id="radioSearchYear" name="selectSearch" onClick="selectedOption()" value="year" th:checked="${typeSearch == 'year'}? checked" >
                             <label for="radioSearchTitle">Búsqueda por intervalo de año</label>
-                            <input type="radio" id="radioSearchCountry" name="selectSearch" onClick="selectedOption()" value="country">
+                            <input type="radio" id="radioSearchCountry" name="selectSearch" onClick="selectedOption()" value="country" th:checked="${typeSearch == 'country'}? checked" >
                             <label for="radioSearchTitle">Búsqueda por país de producción</label>
-                            <input type="radio" id="radioSearchDirection" name="selectSearch" onClick="selectedOption()" value="direction">
+                            <input type="radio" id="radioSearchDirection" name="selectSearch" onClick="selectedOption()" value="direction" th:checked="${typeSearch == 'direction'}? checked" >
                             <label for="radioSearchTitle">Búsqueda por dirección</label>
-                            <input type="radio" id="radioSearchGenres" name="selectSearch" onClick="selectedOption()" value="genres">
+                            <input type="radio" id="radioSearchGenres" name="selectSearch" onClick="selectedOption()" value="genres" th:checked="${typeSearch == 'genres'}? checked" >
                             <label for="radioSearchTitle">Búsqueda por género</label>
                         </div>
                         <div class="container card">
@@ -71,7 +71,7 @@
                             </div>
                         </div>
                         <div style="margin-top:10px;">
-                            <a class="btn btn-primary" onClick="searchFilms()">
+                            <a class="btn btn-primary" onClick="searchFilms();">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                                     <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
                                 </svg>

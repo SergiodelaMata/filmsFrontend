@@ -1,12 +1,12 @@
 const searchRadioButton = document.getElementsByName("selectSearch");
-const searchTitle = document.getElementById("searchTitle");
-const searchYearInit = document.getElementById("searchYearInit");
-const searchYearEnd = document.getElementById("searchYearEnd");
-const searchCountry = document.getElementById("searchCountry");
-const searchDirection = document.getElementById("searchDirection");
-const searchGenres = document.getElementById("searchGenres");
+var valueRadioButton = getValueRadioButton();
 
-function selectedOption(){
+window.addEventListener("DOMContentLoaded", function() {
+    valueRadioButton = getValueRadioButton();
+    selectedOption();
+}, false);
+
+function getValueRadioButton(){
     var selectedOption = "title";
 
     for(var i = 0; i < searchRadioButton.length; i++)
@@ -16,6 +16,11 @@ function selectedOption(){
             selectedOption = searchRadioButton[i].value;
         }
     }
+    return selectedOption;
+}
+
+function selectedOption(){
+    var selectedOption = getValueRadioButton();
     console.log(selectedOption);
     document.getElementById("searchTitle").value = "";
     document.getElementById("searchYearInit").value = "";
@@ -35,6 +40,7 @@ function selectedOption(){
         document.getElementById("searchingByDirection").classList.add("none");
         document.getElementById("searchingByGenres").classList.remove("visible");
         document.getElementById("searchingByGenres").classList.add("none");
+        valueRadioButton = "title";
     }
     else if(selectedOption === "year")
     {
@@ -48,6 +54,7 @@ function selectedOption(){
         document.getElementById("searchingByDirection").classList.add("none");
         document.getElementById("searchingByGenres").classList.remove("visible");
         document.getElementById("searchingByGenres").classList.add("none");
+        valueRadioButton = "year";
     }
     else if(selectedOption === "country")
     {
@@ -61,6 +68,7 @@ function selectedOption(){
         document.getElementById("searchingByDirection").classList.add("none");
         document.getElementById("searchingByGenres").classList.remove("visible");
         document.getElementById("searchingByGenres").classList.add("none");
+        valueRadioButton = "country";
     }
     else if(selectedOption === "direction")
     {
@@ -74,6 +82,7 @@ function selectedOption(){
         document.getElementById("searchingByDirection").classList.add("visible");
         document.getElementById("searchingByGenres").classList.remove("visible");
         document.getElementById("searchingByGenres").classList.add("none");
+        valueRadioButton = "direction";
     }
     else if(selectedOption === "genres")
     {
@@ -87,11 +96,44 @@ function selectedOption(){
         document.getElementById("searchingByDirection").classList.add("none");
         document.getElementById("searchingByGenres").classList.remove("none");
         document.getElementById("searchingByGenres").classList.add("visible");
+        valueRadioButton = "genres";
     }
-
 }
 
-/*searchTitle.addEventListener("change", async () => {
-   const title = searchTitle.value;
-
-});*/
+function searchFilms(){
+    console.log(valueRadioButton);
+    if(valueRadioButton === "title") //Title
+    {
+        window.location.href = "/films/title?title="+ document.getElementById("searchTitle").value
+            +"&typeSearch="+valueRadioButton;
+    }
+    else if(valueRadioButton === "year") //Year
+    {
+        if(document.getElementById("searchYearInit").value === "" &&
+            document.getElementById("searchYearEnd").value === "")
+        {
+            alert("Por favor, introduzca las dos fechas para poder realizar la búsqueda sobre un intervalo.");
+        }
+        else
+        {
+            window.location.href = "/films/year?yearInit="+ document.getElementById("searchYearInit").value
+                +"&yearEnd=" + document.getElementById("searchYearEnd").value
+                +"&typeSearch="+valueRadioButton;
+        }
+    }
+    else if(valueRadioButton === "country") //Country
+    {
+        window.location.href = "/films/country?country="+ document.getElementById("searchCountry").value
+            +"&typeSearch="+valueRadioButton;
+    }
+    else if(valueRadioButton === "direction") //Direction
+    {
+        window.location.href = "/films/direction?direction="+ document.getElementById("searchDirection").value
+            +"&typeSearch="+valueRadioButton;
+    }
+    else if(valueRadioButton === "genres") //Genres
+    {
+        window.location.href = "/films/genres?genres="+ document.getElementById("searchGenres").value
+            +"&typeSearch="+valueRadioButton;
+    }
+}
