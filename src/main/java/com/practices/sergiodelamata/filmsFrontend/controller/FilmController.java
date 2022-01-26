@@ -1,6 +1,5 @@
 package com.practices.sergiodelamata.filmsFrontend.controller;
 
-import com.practices.sergiodelamata.filmsFrontend.model.Actor;
 import com.practices.sergiodelamata.filmsFrontend.model.Film;
 import com.practices.sergiodelamata.filmsFrontend.paginator.PageRender;
 import com.practices.sergiodelamata.filmsFrontend.service.IFilmService;
@@ -19,10 +18,16 @@ public class FilmController {
     @Autowired
     IFilmService filmService;
 
-    @GetMapping(value = {"/", "/home", ""})
-    public String home(Model model)
+    @GetMapping(value = {"/", ""})
+    public String home(Model model, @RequestParam(name="page", defaultValue = "0") int page)
     {
-        return "home";
+        Pageable pageable = PageRequest.of(page, 5);
+        Page<Film> list = filmService.searchAll(pageable);
+        PageRender<Film> pageRender = new PageRender<Film>("/films/list", list);
+
+        model.addAttribute("title", "Listado de películas");
+        model.addAttribute("listFilms", list);
+        return "films";
     }
 
     @GetMapping("/new")
