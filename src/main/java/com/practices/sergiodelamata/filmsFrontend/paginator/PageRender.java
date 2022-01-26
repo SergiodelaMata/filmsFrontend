@@ -15,40 +15,40 @@ public class PageRender<T> {
     public PageRender(String url, Page<T> page) {
         this.url = url;
         this.page = page;
-        this.pages = new ArrayList<PageItem>();
+        this.pages = new ArrayList<>();
         numElementsPerPage = 5;
         totalPages = page.getTotalPages();
         actualPage = page.getNumber() + 1;
-        int desde, hasta;
+        int from, to;
         if (totalPages <= numElementsPerPage) {
-            desde = 1;
-            hasta = totalPages;
+            from = 1;
+            to = totalPages;
         } else {
             if (actualPage <= numElementsPerPage / 2) {
-                desde = 1;
-                hasta = numElementsPerPage;
+                from = 1;
+                to = numElementsPerPage;
             } else if (actualPage >= totalPages - numElementsPerPage / 2) {
-                desde = totalPages - numElementsPerPage + 1;
-                hasta = numElementsPerPage;
+                from = totalPages - numElementsPerPage + 1;
+                to = numElementsPerPage;
             } else {
-                desde = actualPage - numElementsPerPage / 2;
-                hasta = numElementsPerPage;
+                from = actualPage - numElementsPerPage / 2;
+                to = numElementsPerPage;
             }
         }
-        for (int i = 0; i < hasta; i++) {
-            pages.add(new PageItem(desde + i, actualPage == desde + i));
+        for (int i = 0; i < to; i++) {
+            pages.add(new PageItem(from + i, actualPage == from + i));
         }
     }
     public String getUrl() {
         return url;
     }
-    public int gettotalPages() {
+    public int getTotalPages() {
         return totalPages;
     }
-    public int getactualPage() {
+    public int getActualPage() {
         return actualPage;
     }
-    public List<PageItem> getpages() {
+    public List<PageItem> getPages() {
         return pages;
     }
     public boolean isFirst() {
