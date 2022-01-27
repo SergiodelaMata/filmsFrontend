@@ -6,8 +6,8 @@ window.addEventListener("DOMContentLoaded", function() {
         event.preventDefault();
         const formData = formSerializer(event);
         //console.log(formData);
-        await(postRequest("/films/save",formData));
-        //const response = await(postRequest("/films/save",formData));
+        await(putRequest("/films/save",formData));
+        //const response = await(putRequest("/films/save",formData));
         alert("Los datos de la película se han guardado correctamente.");
         window.location.href = "/films";
     });

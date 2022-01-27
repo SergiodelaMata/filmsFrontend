@@ -1,23 +1,42 @@
 const searchRadioButton = document.getElementsByName("selectSearch");
 var valueRadioButton = getValueRadioButton();
+var requestFilmsButtons;
+var editFilmsButtons;
 var deleteFilmsButtons;
 
 window.addEventListener("DOMContentLoaded", function() {
     valueRadioButton = getValueRadioButton();
     selectedOption();
+    requestFilmsButtons = document.getElementsByClassName("request-film");
+    for (var i = 0; i < requestFilmsButtons.length; i++) {
+        requestFilmsButtons[i].addEventListener("click", detailFilm, false);
+    }
+    editFilmsButtons = document.getElementsByClassName("edit-film");
+    for (var i = 0; i < editFilmsButtons.length; i++) {
+        editFilmsButtons[i].addEventListener("click", editFilm, false);
+    }
     deleteFilmsButtons = document.getElementsByClassName("delete-film");
     for (var i = 0; i < deleteFilmsButtons.length; i++) {
         deleteFilmsButtons[i].addEventListener("click", deleteFilm, false);
     }
-
 }, false);
+
+const detailFilm = async function(){
+    const idFilm = this.getAttribute("idfilm");
+    window.location.href = "/films/" + idFilm + "?mode=request";
+}
+
+const editFilm = async function(){
+    const idFilm = this.getAttribute("idfilm");
+    window.location.href = "/films/edit/" + idFilm + "?mode=edit";
+}
 
 const deleteFilm = async function () {
     const idFilm = this.getAttribute("idfilm");
     var actionConfirmed = confirm("¿Estás seguro de que desea eliminar esta película?");
     if(actionConfirmed) {
-        const response = await deleteRequest("/films/delete/" + idFilm);
-        console.log(response);
+        await deleteRequest("/films/delete/" + idFilm);
+        //const response = await deleteRequest("/films/delete/" + idFilm);
         alert("La película ha sido eliminado");
         location.reload();
     }
@@ -46,6 +65,7 @@ function selectedOption(){
     document.getElementById("searchCountry").value = "";
     document.getElementById("searchDirection").value = "";
     document.getElementById("searchGenres").value = "";
+    document.getElementById("searchActorName").value = "";
     if(selectedOption === "title")
     {
         document.getElementById("searchingByTitle").classList.remove("none");
@@ -58,6 +78,8 @@ function selectedOption(){
         document.getElementById("searchingByDirection").classList.add("none");
         document.getElementById("searchingByGenres").classList.remove("visible");
         document.getElementById("searchingByGenres").classList.add("none");
+        document.getElementById("searchingByActorName").classList.remove("visible");
+        document.getElementById("searchingByActorName").classList.add("none");
         valueRadioButton = "title";
     }
     else if(selectedOption === "year")
@@ -72,6 +94,8 @@ function selectedOption(){
         document.getElementById("searchingByDirection").classList.add("none");
         document.getElementById("searchingByGenres").classList.remove("visible");
         document.getElementById("searchingByGenres").classList.add("none");
+        document.getElementById("searchingByActorName").classList.remove("visible");
+        document.getElementById("searchingByActorName").classList.add("none");
         valueRadioButton = "year";
     }
     else if(selectedOption === "country")
@@ -86,6 +110,8 @@ function selectedOption(){
         document.getElementById("searchingByDirection").classList.add("none");
         document.getElementById("searchingByGenres").classList.remove("visible");
         document.getElementById("searchingByGenres").classList.add("none");
+        document.getElementById("searchingByActorName").classList.remove("visible");
+        document.getElementById("searchingByActorName").classList.add("none");
         valueRadioButton = "country";
     }
     else if(selectedOption === "direction")
@@ -100,6 +126,8 @@ function selectedOption(){
         document.getElementById("searchingByDirection").classList.add("visible");
         document.getElementById("searchingByGenres").classList.remove("visible");
         document.getElementById("searchingByGenres").classList.add("none");
+        document.getElementById("searchingByActorName").classList.remove("visible");
+        document.getElementById("searchingByActorName").classList.add("none");
         valueRadioButton = "direction";
     }
     else if(selectedOption === "genres")
@@ -114,7 +142,25 @@ function selectedOption(){
         document.getElementById("searchingByDirection").classList.add("none");
         document.getElementById("searchingByGenres").classList.remove("none");
         document.getElementById("searchingByGenres").classList.add("visible");
+        document.getElementById("searchingByActorName").classList.remove("visible");
+        document.getElementById("searchingByActorName").classList.add("none");
         valueRadioButton = "genres";
+    }
+    else if(selectedOption === "actorName")
+    {
+        document.getElementById("searchingByTitle").classList.remove("visible");
+        document.getElementById("searchingByTitle").classList.add("none");
+        document.getElementById("searchingByYear").classList.remove("visible");
+        document.getElementById("searchingByYear").classList.add("none");
+        document.getElementById("searchingByCountry").classList.remove("visible");
+        document.getElementById("searchingByCountry").classList.add("none");
+        document.getElementById("searchingByDirection").classList.remove("visible");
+        document.getElementById("searchingByDirection").classList.add("none");
+        document.getElementById("searchingByGenres").classList.remove("visible");
+        document.getElementById("searchingByGenres").classList.add("none");
+        document.getElementById("searchingByActorName").classList.remove("none");
+        document.getElementById("searchingByActorName").classList.add("visible");
+        valueRadioButton = "actorName";
     }
 }
 
@@ -151,6 +197,11 @@ function searchFilms(){
     else if(valueRadioButton === "genres") //Genres
     {
         window.location.href = "/films/genres?genres="+ document.getElementById("searchGenres").value
+            +"&typeSearch="+valueRadioButton;
+    }
+    else if(valueRadioButton === "actorName") //actorName
+    {
+        window.location.href = "/films/actorName?actorName="+ document.getElementById("searchActorName").value
             +"&typeSearch="+valueRadioButton;
     }
 }

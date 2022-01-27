@@ -2,6 +2,7 @@ package com.practices.sergiodelamata.filmsFrontend.controller;
 
 import com.practices.sergiodelamata.filmsFrontend.model.Film;
 import com.practices.sergiodelamata.filmsFrontend.paginator.PageRender;
+import com.practices.sergiodelamata.filmsFrontend.service.IActorService;
 import com.practices.sergiodelamata.filmsFrontend.service.IFilmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class FilmController {
     @Autowired
     IFilmService filmService;
+    @Autowired
+    IActorService actorService;
 
     @GetMapping(value = {"/", ""})
     public String home(Model model, @RequestParam(name="page", defaultValue = "0") int page)
@@ -54,9 +57,11 @@ public class FilmController {
     }
 
     @GetMapping("/{idFilm}")
-    public String searchFilmById(Model model, @PathVariable("idFilm") Integer idFilm)
+    public String searchFilmById(Model model, @PathVariable("idFilm") Integer idFilm, @RequestParam(name="mode", defaultValue = "request") String mode)
     {
         Film film = filmService.searchFilmById(idFilm);
+        model.addAttribute("title", "FilmingApp | Consultar datos de película");
+        model.addAttribute("mode", mode);
         model.addAttribute("film", film);
         return "films/formFilm";
     }
@@ -168,22 +173,57 @@ public class FilmController {
         return "films/listFilms";
     }
 
+    @GetMapping("/actorName")
+    public String searchFilmsByActorsName(Model model, @RequestParam(name="page", defaultValue = "0") int page,
+                                          @RequestParam("actorName") String actorName,
+                                          @RequestParam(name="typeSearch", defaultValue = "actorName") String typeSearch)
+    {
+        Pageable pageable = PageRequest.of(page, 5);
+        Page<Film> list;
+        if(actorName.equals(""))
+        {
+            list = filmService.searchAll(pageable);
+        }
+        else
+        {
+            list = actorService.searchFilmsByActorsName(actorName, pageable);
+        }
+        PageRender<Film> pageRender = new PageRender<Film>("/films/actorName", list);
+        model.addAttribute("title", "FilmingApp | Listado de películas por nombre de actor");
+        model.addAttribute("listFilms", list);
+        model.addAttribute("page", pageRender);
+        model.addAttribute("typeSearch", typeSearch);
+        return "films/listFilms";
+    }
+
+
     @PostMapping("/save")
     public String saveFilm(Model model, @RequestBody Film film, RedirectAttributes attributes)
     {
         filmService.saveFilm(film);
         model.addAttribute("title", "Nueva película");
         attributes.addFlashAttribute("msg", "Los datos de la película se han guardado correctamente.");
-        return "redirect:/films";
+        return "redirect: /films";
     }
 
+    @PutMapping ("/save")
+    public String updateFilm(Model model, @RequestBody Film film, RedirectAttributes attributes)
+    {
+        filmService.saveFilm(film);
+        model.addAttribute("title", "Nueva película");
+        attributes.addFlashAttribute("msg", "Los datos de la película se han guardado correctamente.");
+        return "redirect: /films";
+    }
+
+
     @GetMapping("/edit/{idFilm}")
-    public String editFilm(Model model, @PathVariable("idFilm") Integer idFilm)
+    public String editFilm(Model model, @PathVariable("idFilm") Integer idFilm, @RequestParam(name="mode", defaultValue = "edit") String mode)
     {
         Film film = filmService.searchFilmById(idFilm);
-        model.addAttribute("title", "Editar datos de la película");
+        model.addAttribute("title", "FilmingApp | Editar datos de película");
+        model.addAttribute("mode", mode);
         model.addAttribute("film", film);
-        return "films/formFilms";
+        return "films/formFilm";
     }
 
     @DeleteMapping("/delete/{idFilm}")
@@ -192,7 +232,7 @@ public class FilmController {
         System.out.println("ID: " + idFilm);
         filmService.deleteFilm(idFilm);
         attributes.addFlashAttribute("msg", "Se ha borrado la película correctamente.");
-        return "redirect:/films";
+        return "redirect: /films";
     }
 
 }
