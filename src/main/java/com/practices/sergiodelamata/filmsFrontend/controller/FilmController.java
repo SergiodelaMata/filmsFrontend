@@ -37,26 +37,21 @@ public class FilmController {
         return "redirect:/home";
     }
 
+    @GetMapping(value = "/goBackFilms")
+    public String goBackFilms(Model model)
+    {
+        return "redirect:/films";
+    }
+
+
     @GetMapping("/new")
     public String newFilm(Model model)
     {
-        model.addAttribute("title", "Nuevo actor");
         Film film = new Film();
+        model.addAttribute("title", "FilmingApp | Nueva película");
         model.addAttribute("film", film);
-        return "films/formFilm";
+        return "films/formFilmNew";
     }
-
-    /*@GetMapping("/list/findByTitle")
-    public String listFilms(Model model, @RequestParam(name="page", defaultValue = "0") int page)
-    {
-        Pageable pageable = PageRequest.of(page, 5);
-        Page<Film> list = filmService.searchAll(pageable);
-        PageRender<Film> pageRender = new PageRender<Film>("/films/list", list);
-
-        model.addAttribute("title", "FilmingApp | Listado de películas");
-        model.addAttribute("listFilms", list);
-        return "films/listByTitle";
-    }*/
 
     @GetMapping("/{idFilm}")
     public String searchFilmById(Model model, @PathVariable("idFilm") Integer idFilm)
@@ -191,12 +186,13 @@ public class FilmController {
         return "films/formFilms";
     }
 
-    @GetMapping("/delete/{idFilm}")
-    public String deleteActor(Model model, @PathVariable("idFilm") Integer idFilm, RedirectAttributes attributes)
+    @DeleteMapping("/delete/{idFilm}")
+    public String deleteFilm(Model model, @PathVariable("idFilm") Integer idFilm, RedirectAttributes attributes)
     {
+        System.out.println("ID: " + idFilm);
         filmService.deleteFilm(idFilm);
         attributes.addFlashAttribute("msg", "Se ha borrado la película correctamente.");
-        return "redirect:/films/list";
+        return "redirect:/films";
     }
 
 }
