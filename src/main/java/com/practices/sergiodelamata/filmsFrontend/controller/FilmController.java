@@ -91,7 +91,7 @@ public class FilmController {
     {
         Pageable pageable = PageRequest.of(page, 5);
         Page<Film> list = filmService.searchFilmsByYear(yearInit, yearEnd, pageable);
-        PageRender<Film> pageRender = new PageRender<Film>("/list", list);
+        PageRender<Film> pageRender = new PageRender<Film>("/films/year", list);
         model.addAttribute("title", "FilmingApp | Listado de películas por año");
         model.addAttribute("listFilms", list);
         model.addAttribute("page", pageRender);
@@ -114,7 +114,7 @@ public class FilmController {
         {
             list = filmService.searchFilmsByCountry(country, pageable);
         }
-        PageRender<Film> pageRender = new PageRender<Film>("/list", list);
+        PageRender<Film> pageRender = new PageRender<Film>("/films/country", list);
         model.addAttribute("title", "FilmingApp | Listado de películas por país");
         model.addAttribute("listFilms", list);
         model.addAttribute("page", pageRender);
@@ -137,7 +137,7 @@ public class FilmController {
         {
             list = filmService.searchFilmsByDirection(direction, pageable);
         }
-        PageRender<Film> pageRender = new PageRender<Film>("/list", list);
+        PageRender<Film> pageRender = new PageRender<Film>("/films/direction", list);
         model.addAttribute("title", "FilmingApp | Listado de películas por su dirección");
         model.addAttribute("listFilms", list);
         model.addAttribute("page", pageRender);
@@ -160,7 +160,7 @@ public class FilmController {
         {
             list = filmService.searchFilmsByGenres(genres, pageable);
         }
-        PageRender<Film> pageRender = new PageRender<Film>("/list", list);
+        PageRender<Film> pageRender = new PageRender<Film>("/films/genres", list);
         model.addAttribute("title", "FilmingApp | Listado de películas por su género");
         model.addAttribute("listFilms", list);
         model.addAttribute("page", pageRender);
@@ -169,12 +169,12 @@ public class FilmController {
     }
 
     @PostMapping("/save")
-    public String saveFilm(Model model, Film film, RedirectAttributes attributes)
+    public String saveFilm(Model model, @RequestBody Film film, RedirectAttributes attributes)
     {
         filmService.saveFilm(film);
         model.addAttribute("title", "Nueva película");
         attributes.addFlashAttribute("msg", "Los datos de la película se han guardado correctamente.");
-        return "redirect:/films/list";
+        return "redirect:/films";
     }
 
     @GetMapping("/edit/{idFilm}")

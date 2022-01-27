@@ -14,7 +14,6 @@ window.addEventListener("DOMContentLoaded", function() {
 
 const deleteFilm = async function () {
     const idFilm = this.getAttribute("idfilm");
-    console.log("/films/delete/" + idFilm);
     var actionConfirmed = confirm("¿Estás seguro de que desea eliminar esta película?");
     if(actionConfirmed) {
         const response = await deleteRequest("/films/delete/" + idFilm);
@@ -120,7 +119,6 @@ function selectedOption(){
 }
 
 function searchFilms(){
-    console.log(valueRadioButton);
     if(valueRadioButton === "title") //Title
     {
         window.location.href = "/films/title?title="+ document.getElementById("searchTitle").value
