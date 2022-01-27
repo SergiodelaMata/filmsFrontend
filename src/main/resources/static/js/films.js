@@ -1,10 +1,29 @@
 const searchRadioButton = document.getElementsByName("selectSearch");
 var valueRadioButton = getValueRadioButton();
+var deleteFilmsButtons;
 
 window.addEventListener("DOMContentLoaded", function() {
     valueRadioButton = getValueRadioButton();
     selectedOption();
+    deleteFilmsButtons = document.getElementsByClassName("delete-film");
+    for (var i = 0; i < deleteFilmsButtons.length; i++) {
+        deleteFilmsButtons[i].addEventListener("click", deleteFilm, false);
+    }
+
 }, false);
+
+const deleteFilm = async function () {
+    const idFilm = this.getAttribute("idfilm");
+    console.log("/films/delete/" + idFilm);
+    var actionConfirmed = confirm("¿Estás seguro de que desea eliminar esta película?");
+    if(actionConfirmed) {
+        const response = await deleteRequest("/films/delete/" + idFilm);
+        console.log(response);
+        alert("La película ha sido eliminado");
+        location.reload();
+    }
+};
+
 
 function getValueRadioButton(){
     var selectedOption = "title";
