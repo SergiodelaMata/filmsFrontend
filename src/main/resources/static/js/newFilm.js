@@ -5,7 +5,6 @@ window.addEventListener("DOMContentLoaded", function() {
     formFilm.addEventListener("submit", async(event) =>{
         event.preventDefault();
         const formData = formSerializer(event);
-        //console.log(formData);
         await(postRequest("/films/save",formData));
         //const response = await(postRequest("/films/save",formData));
         alert("Los datos de la película se han guardado correctamente.");
