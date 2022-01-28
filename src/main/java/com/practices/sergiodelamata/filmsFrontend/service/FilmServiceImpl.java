@@ -104,4 +104,15 @@ public class FilmServiceImpl implements IFilmService{
     public void deleteFilm(Integer idFilm) {
         template.delete(url + "/" + idFilm);
     }
+
+    @Override
+    public void insertActor(Integer idFilm, Integer idActor) {
+        template.put(url + "/insert/actor/" + idFilm + "/" + idActor, String.class);
+    }
+
+    @Override
+    public void removeActor(Integer idFilm, Integer idActor) {
+        System.out.println(url + "/delete/actor/" + idFilm + "/" + idActor);
+        template.delete(url + "/delete/actor/" + idFilm + "/" + idActor, String.class);
+    }
 }

@@ -104,4 +104,17 @@ public class ActorController {
         attributes.addFlashAttribute("msg", "Se ha borrado el actor correctamente.");
         return "redirect:/actors/list";
     }
+
+    @PutMapping("/insert/film/{idActor}/{idFilm}")
+    public String insertFilm(@PathVariable("idActor") Integer idActor, @PathVariable("idFilm") Integer idFilm){
+        actorService.insertFilm(idActor, idFilm);
+        return "redirect:/actors/list";
+    }
+
+    @DeleteMapping("/delete/film/{idActor}/{idFilm}")
+    public String deleteFilm(@PathVariable("idActor") Integer idActor, @PathVariable("idFilm") Integer idFilm){
+        actorService.removeFilm(idActor, idFilm);
+        return "redirect:/actors/list";
+    }
+
 }

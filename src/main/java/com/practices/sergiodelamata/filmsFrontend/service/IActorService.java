@@ -19,4 +19,6 @@ public interface IActorService {
     void deleteActor(Integer idActor);
 
     void insertFilm(Integer idActor, Integer idFilm);
+
+    void removeFilm(Integer idActor, Integer idFilm);
 }

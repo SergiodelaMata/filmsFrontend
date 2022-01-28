@@ -22,4 +22,9 @@ public interface IFilmService {
     void saveFilm(Film film);
 
     void deleteFilm(Integer idFilm);
+
+    void insertActor(Integer idFilm, Integer idActor);
+
+    void removeActor(Integer idFilm, Integer idActor);
+
 }

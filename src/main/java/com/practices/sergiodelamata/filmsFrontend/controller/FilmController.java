@@ -237,4 +237,15 @@ public class FilmController {
         return "redirect: /films";
     }
 
+    @PutMapping("/insert/actor/{idFilm}/{idActor}")
+    public String insertActor(@PathVariable("idFilm") Integer idFilm, @PathVariable("idActor") Integer idActor){
+        filmService.insertActor(idFilm, idActor);
+        return "redirect: /films/formFilm";
+    }
+
+    @DeleteMapping("/delete/actor/{idFilm}/{idActor}")
+    public String deleteFilm(@PathVariable("idFilm") Integer idFilm, @PathVariable("idActor") Integer idActor){
+        filmService.removeActor(idFilm, idActor);
+        return "redirect: /films/formFilm";
+    }
 }

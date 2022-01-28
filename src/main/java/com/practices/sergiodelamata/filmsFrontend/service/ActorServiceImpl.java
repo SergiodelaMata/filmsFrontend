@@ -104,4 +104,10 @@ public class ActorServiceImpl implements IActorService {
     public void insertFilm(Integer idActor, Integer idFilm) {
         template.put(urlActors + "/insert/film/" + idActor + "/" + idFilm, String.class);
     }
+
+    @Override
+    public void removeFilm(Integer idActor, Integer idFilm) {
+        template.put(urlActors + "/delete/film/" + idActor + "/" + idFilm, String.class);
+    }
+
 }
