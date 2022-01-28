@@ -1,5 +1,6 @@
 package com.practices.sergiodelamata.filmsFrontend.controller;
 
+import com.practices.sergiodelamata.filmsFrontend.model.Actor;
 import com.practices.sergiodelamata.filmsFrontend.model.Film;
 import com.practices.sergiodelamata.filmsFrontend.paginator.PageRender;
 import com.practices.sergiodelamata.filmsFrontend.service.IActorService;
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/films")
@@ -197,6 +201,17 @@ public class FilmController {
         return "films/listFilms";
     }
 
+    @GetMapping("/actor/{idFilm}")
+    public String insertActorToFilm(Model model, @PathVariable("idFilm") Integer idFilm){
+        Film film = filmService.searchFilmById(idFilm);
+        List<Actor> listActorNotInFilm = actorService.searchActorsNotInFilm(film);
+        model.addAttribute("title", "FilmingApp | Nuevo actor para el reparto");
+        model.addAttribute("idFilm", idFilm);
+        model.addAttribute("listActors", listActorNotInFilm);
+
+        return "/films/formAddActorFilm";
+    }
+
 
     @PostMapping("/save")
     public String saveFilm(Model model, @RequestBody Film film, RedirectAttributes attributes)
@@ -231,14 +246,13 @@ public class FilmController {
     @DeleteMapping("/delete/{idFilm}")
     public String deleteFilm(Model model, @PathVariable("idFilm") Integer idFilm, RedirectAttributes attributes)
     {
-        System.out.println("ID: " + idFilm);
         filmService.deleteFilm(idFilm);
         attributes.addFlashAttribute("msg", "Se ha borrado la película correctamente.");
         return "redirect: /films";
     }
 
     @PutMapping("/insert/actor/{idFilm}/{idActor}")
-    public String insertActor(@PathVariable("idFilm") Integer idFilm, @PathVariable("idActor") Integer idActor){
+    public String insertActors(@PathVariable("idFilm") Integer idFilm, @PathVariable("idActor") Integer idActor){
         filmService.insertActor(idFilm, idActor);
         return "redirect: /films/formFilm";
     }

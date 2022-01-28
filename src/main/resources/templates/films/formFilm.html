@@ -8,6 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script th:src="@{/js/updateFilm.js}"></script>
+    <script th:src="@{/js/insertActorFilm.js}"></script>
     <script th:src="@{/js/removeActorFilm.js}"></script>
     <script th:src="@{/js/httpRequests.js}"></script>
     <script th:src="@{/js/formTools.js}"></script>
@@ -72,7 +73,22 @@
                 </div>
             </div>
             <div class="d-flex justify-content-center container card" style="margin:10px;">
-                <h2>Reparto de la película:</h2>
+                <div class="row">
+                    <div class="d-flex d-inline container" style="margin-top:10px; margin-bottom: 10px;">
+                        <div class="col-sm-9">
+                            <h2>Reparto de la película:</h2>
+                        </div>
+                        <div class="col-sm-3 d-flex justify-content-end" th:if="${mode == 'edit'}" >
+                            <a id="new-actor-film" class="btn btn-success" onClick="insertActorFilm();" th:idFilm="${film.getIdFilm()}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+                                </svg>
+                                Insertar nuevos actores al reparto
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="d-flex d-inline justify-content-center container card col-sm-2" th:each="actor : ${film.getActors()}">
                         <img th:src="${actor.getImage()}">

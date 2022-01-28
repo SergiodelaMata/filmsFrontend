@@ -10,8 +10,6 @@ window.addEventListener("DOMContentLoaded", function() {
 const deleteRelation = async function () {
     const idFilm = this.getAttribute("idfilm");
     const idActor = this.getAttribute("idactor");
-    console.log(idFilm);
-    console.log(idActor);
     var actionConfirmed = confirm("¿Estás seguro de que desea eliminar a este actor del reparto de esta película?");
     if(actionConfirmed) {
         await deleteRequest("/films/delete/actor/" + idFilm + "/" + idActor);

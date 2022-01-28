@@ -110,4 +110,32 @@ public class ActorServiceImpl implements IActorService {
         template.put(urlActors + "/delete/film/" + idActor + "/" + idFilm, String.class);
     }
 
+    @Override
+    public List<Actor> searchActorsNotInFilm(Film film) {
+        Actor[] actors = template.getForObject(urlActors, Actor[].class);
+        List<Actor> listActors = film.getActors();
+        ArrayList<String> listNameActors = new ArrayList<>();
+        for(int i = 0; i < listActors.size(); i++)
+        {
+            listNameActors.add(listActors.get(i).getName());
+        }
+        List<Actor> completeListActors = Arrays.asList(actors);
+        ArrayList<String> completeListNameActors = new ArrayList<>();
+        for(int i = 0; i < completeListActors.size(); i++)
+        {
+            completeListNameActors.add(completeListActors.get(i).getName());
+        }
+        ArrayList<Actor> listActorsAux = new ArrayList<>();
+        for(int i = 0; i < completeListActors.size(); i++)
+        {
+            //Comprueba si el nombre del actor comparado ya se encuentra en la lista de los nombres de los actores que
+            // ya hay en la película antes de introducirlo en la lista auxiliar
+            if(!listNameActors.contains(completeListNameActors.get(i)))
+            {
+                listActorsAux.add(completeListActors.get(i));
+            }
+        }
+        return listActorsAux;
+    }
+
 }
