@@ -1,5 +1,11 @@
 package com.practices.sergiodelamata.filmsFrontend.model;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
+import java.util.Collections;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,4 +82,24 @@ public class Actor {
     public void setFilms(List<Film> films) {
         this.films = films;
     }
+
+    public Page<Actor> getPageActor(List<Actor> listActors, Pageable pageable)
+    {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+        List<Actor> list;
+        if(listActors.size() < startItem)
+        {
+            list = Collections.emptyList();
+        }
+        else
+        {
+            int toIndex = Math.min(startItem + pageSize, listActors.size());
+            list = listActors.subList(startItem, toIndex);
+        }
+        Page<Actor> page = new PageImpl<>(list, PageRequest.of(currentPage, pageSize), listActors.size());
+        return page;
+    }
+
 }

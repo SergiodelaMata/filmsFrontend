@@ -37,19 +37,6 @@ public class FilmController {
         return "films";
     }
 
-    @GetMapping(value = "/goBackMenu")
-    public String goBackMenu(Model model)
-    {
-        return "redirect:/home";
-    }
-
-    @GetMapping(value = "/goBackFilms")
-    public String goBackFilms(Model model)
-    {
-        return "redirect:/films";
-    }
-
-
     @GetMapping("/new")
     public String newFilm(Model model)
     {
@@ -60,7 +47,8 @@ public class FilmController {
     }
 
     @GetMapping("/{idFilm}")
-    public String searchFilmById(Model model, @PathVariable("idFilm") Integer idFilm, @RequestParam(name="mode", defaultValue = "request") String mode)
+    public String searchFilmById(Model model, @PathVariable("idFilm") Integer idFilm,
+                                 @RequestParam(name="mode", defaultValue = "request") String mode)
     {
         Film film = filmService.searchFilmById(idFilm);
         model.addAttribute("title", "FilmingApp | Consultar datos de película");
@@ -85,7 +73,7 @@ public class FilmController {
         {
             list = filmService.searchFilmsByTitle(title, pageable);
         }
-        PageRender<Film> pageRender = new PageRender<Film>("/films/title", list);
+        PageRender<Film> pageRender = new PageRender<Film>("/films/title?title=" + title + "&typeSearch=" + typeSearch, list);
         model.addAttribute("title", "FilmingApp | Listado de películas por título");
         model.addAttribute("listFilms", list);
         model.addAttribute("page", pageRender);
@@ -100,7 +88,7 @@ public class FilmController {
     {
         Pageable pageable = PageRequest.of(page, 5);
         Page<Film> list = filmService.searchFilmsByYear(yearInit, yearEnd, pageable);
-        PageRender<Film> pageRender = new PageRender<Film>("/films/year", list);
+        PageRender<Film> pageRender = new PageRender<Film>("/films/year?yearInit=" + yearInit + "&yearEnd=" + yearEnd + "&typeSearch=" + typeSearch, list);
         model.addAttribute("title", "FilmingApp | Listado de películas por año");
         model.addAttribute("listFilms", list);
         model.addAttribute("page", pageRender);
@@ -123,7 +111,7 @@ public class FilmController {
         {
             list = filmService.searchFilmsByCountry(country, pageable);
         }
-        PageRender<Film> pageRender = new PageRender<Film>("/films/country", list);
+        PageRender<Film> pageRender = new PageRender<Film>("/films/country?country=" + country + "&typeSearch=" + typeSearch, list);
         model.addAttribute("title", "FilmingApp | Listado de películas por país");
         model.addAttribute("listFilms", list);
         model.addAttribute("page", pageRender);
@@ -146,7 +134,7 @@ public class FilmController {
         {
             list = filmService.searchFilmsByDirection(direction, pageable);
         }
-        PageRender<Film> pageRender = new PageRender<Film>("/films/direction", list);
+        PageRender<Film> pageRender = new PageRender<Film>("/films/direction?direction=" + direction + "&typeSearch=" + typeSearch, list);
         model.addAttribute("title", "FilmingApp | Listado de películas por su dirección");
         model.addAttribute("listFilms", list);
         model.addAttribute("page", pageRender);
@@ -169,7 +157,7 @@ public class FilmController {
         {
             list = filmService.searchFilmsByGenres(genres, pageable);
         }
-        PageRender<Film> pageRender = new PageRender<Film>("/films/genres", list);
+        PageRender<Film> pageRender = new PageRender<Film>("/films/genres?genres=" + genres + "&typeSearch=" + typeSearch, list);
         model.addAttribute("title", "FilmingApp | Listado de películas por su género");
         model.addAttribute("listFilms", list);
         model.addAttribute("page", pageRender);
@@ -192,7 +180,7 @@ public class FilmController {
         {
             list = actorService.searchFilmsByActorsName(actorName, pageable);
         }
-        PageRender<Film> pageRender = new PageRender<Film>("/films/actorName", list);
+        PageRender<Film> pageRender = new PageRender<Film>("/films/actorName?actorName=" + actorName + "&typeSearch=" + typeSearch, list);
         model.addAttribute("title", "FilmingApp | Listado de películas por nombre de actor");
         model.addAttribute("listFilms", list);
         model.addAttribute("page", pageRender);
@@ -208,7 +196,7 @@ public class FilmController {
         model.addAttribute("idFilm", idFilm);
         model.addAttribute("listActors", listActorNotInFilm);
 
-        return "/films/formAddActorFilm";
+        return "films/formAddActorFilm";
     }
 
 
@@ -218,7 +206,7 @@ public class FilmController {
         filmService.saveFilm(film);
         model.addAttribute("title", "Nueva película");
         attributes.addFlashAttribute("msg", "Los datos de la película se han guardado correctamente.");
-        return "redirect: /films";
+        return "films";
     }
 
     @PutMapping ("/save")
@@ -227,7 +215,7 @@ public class FilmController {
         filmService.saveFilm(film);
         model.addAttribute("title", "Nueva película");
         attributes.addFlashAttribute("msg", "Los datos de la película se han guardado correctamente.");
-        return "redirect: /films";
+        return "films";
     }
 
 
@@ -247,18 +235,18 @@ public class FilmController {
     {
         filmService.deleteFilm(idFilm);
         attributes.addFlashAttribute("msg", "Se ha borrado la película correctamente.");
-        return "redirect: /films";
+        return "films";
     }
 
     @PutMapping("/insert/actor/{idFilm}/{idActor}")
     public String insertActors(@PathVariable("idFilm") Integer idFilm, @PathVariable("idActor") Integer idActor){
         filmService.insertActor(idFilm, idActor);
-        return "redirect: /films/formFilm";
+        return "films/formFilm";
     }
 
     @DeleteMapping("/delete/actor/{idFilm}/{idActor}")
     public String deleteFilm(@PathVariable("idFilm") Integer idFilm, @PathVariable("idActor") Integer idActor){
         filmService.removeActor(idFilm, idActor);
-        return "redirect: /films/formFilm";
+        return "films/formFilm";
     }
 }

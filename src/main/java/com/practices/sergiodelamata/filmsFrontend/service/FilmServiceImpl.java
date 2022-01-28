@@ -1,5 +1,6 @@
 package com.practices.sergiodelamata.filmsFrontend.service;
 
+import com.practices.sergiodelamata.filmsFrontend.model.Actor;
 import com.practices.sergiodelamata.filmsFrontend.model.Film;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -23,22 +25,9 @@ public class FilmServiceImpl implements IFilmService{
     @Override
     public Page<Film> searchAll(Pageable pageable) {
         Film[] films = template.getForObject(url, Film[].class);
+        Film film = new Film();
         List<Film> listFilms = Arrays.asList(films);
-
-        int pageSize = pageable.getPageSize();
-        int currentPage = pageable.getPageNumber();
-        int startItem = currentPage * pageSize;
-        List<Film> list;
-        if(listFilms.size() < startItem)
-        {
-            list = Collections.emptyList();
-        }
-        else
-        {
-            int toIndex = Math.min(startItem + pageSize, listFilms.size());
-            list = listFilms.subList(startItem, toIndex);
-        }
-        Page<Film> page = new PageImpl<>(list, PageRequest.of(currentPage, pageSize), listFilms.size());
+        Page<Film> page = film.getPageFilm(listFilms, pageable);
         return page;
     }
 
@@ -51,40 +40,72 @@ public class FilmServiceImpl implements IFilmService{
     @Override
     public Page<Film> searchFilmsByTitle(String title, Pageable pageable) {
         Film[] films = template.getForObject(url + "/title/" + title, Film[].class);
+        Film film = new Film();
         List<Film> listFilms = Arrays.asList(films);
-        Page<Film> page = new PageImpl<>(listFilms, pageable, listFilms.size());
+        Page<Film> page = film.getPageFilm(listFilms, pageable);
         return page;
     }
 
     @Override
     public Page<Film> searchFilmsByYear(Integer yearInit, Integer yearEnd, Pageable pageable) {
         Film[] films = template.getForObject(url + "/year/" + yearInit + "/" + yearEnd, Film[].class);
+        Film film = new Film();
         List<Film> listFilms = Arrays.asList(films);
-        Page<Film> page = new PageImpl<>(listFilms, pageable, listFilms.size());
+        Page<Film> page = film.getPageFilm(listFilms, pageable);
         return page;
     }
 
     @Override
     public Page<Film> searchFilmsByCountry(String country, Pageable pageable) {
         Film[] films = template.getForObject(url + "/country/" + country, Film[].class);
+        Film film = new Film();
         List<Film> listFilms = Arrays.asList(films);
-        Page<Film> page = new PageImpl<>(listFilms, pageable, listFilms.size());
+        Page<Film> page = film.getPageFilm(listFilms, pageable);
         return page;
     }
 
     @Override
     public Page<Film> searchFilmsByDirection(String direction, Pageable pageable) {
         Film[] films = template.getForObject(url + "/direction/" + direction, Film[].class);
+        Film film = new Film();
         List<Film> listFilms = Arrays.asList(films);
-        Page<Film> page = new PageImpl<>(listFilms, pageable, listFilms.size());
+        Page<Film> page = film.getPageFilm(listFilms, pageable);
         return page;
     }
 
     @Override
     public Page<Film> searchFilmsByGenres(String genres, Pageable pageable) {
         Film[] films = template.getForObject(url + "/genres/" + genres, Film[].class);
+        Film film = new Film();
         List<Film> listFilms = Arrays.asList(films);
-        Page<Film> page = new PageImpl<>(listFilms, pageable, listFilms.size());
+        Page<Film> page = film.getPageFilm(listFilms, pageable);
+        return page;
+    }
+
+    @Override
+    public Page<Actor> searchActorsByFilmsTitle(String title, Pageable pageable)
+    {
+        Film[] films = template.getForObject(url + "/title/" + title, Film[].class);
+        List<Film> listFilms = Arrays.asList(films);
+        ArrayList<Film> arrayListFilms = new ArrayList<>(listFilms);
+        ArrayList<Actor> arrayListActor = new ArrayList<>();
+        ArrayList<String> arrayListActorName = new ArrayList<>();
+        for(int i = 0; i < arrayListFilms.size(); i++)
+        {
+            List<Actor> actors = arrayListFilms.get(i).getActors();
+            for(int j = 0; j < actors.size(); j++)
+            {
+                if(!arrayListActorName.contains(actors.get(j).getName())) //Introduce a la lista el actor si ya no se encontraba antes
+                {
+                    arrayListActor.add(actors.get(j));
+                    arrayListActorName.add(actors.get(j).getName());
+                }
+            }
+        }
+        Actor actor = new Actor();
+        List<Actor> listActors = arrayListActor;
+        //Page<Actor> page = new PageImpl<>(listActors, pageable, listActors.size());
+        Page<Actor> page = actor.getPageActor(listActors, pageable);
         return page;
     }
 

@@ -54,8 +54,9 @@ public class ActorServiceImpl implements IActorService {
     @Override
     public Page<Actor> searchActorsByName(String name, Pageable pageable) {
         Actor[] actors = template.getForObject(urlActors + "/name/" + name, Actor[].class);
+        Actor actor = new Actor();
         List<Actor> listActors = Arrays.asList(actors);
-        Page<Actor> page = new PageImpl<>(listActors, pageable, listActors.size());
+        Page<Actor> page = actor.getPageActor(listActors, pageable);
         return page;
     }
 
@@ -66,19 +67,22 @@ public class ActorServiceImpl implements IActorService {
         List<Actor> listActors = Arrays.asList(actors);
         ArrayList<Actor> arrayListActor = new ArrayList<>(listActors);
         ArrayList<Film> arrayListFilms = new ArrayList<>();
+        ArrayList<String> arrayListFilmsName = new ArrayList<>();
         for(int i = 0; i < arrayListActor.size(); i++)
         {
             List<Film> films = arrayListActor.get(i).getFilms();
             for(int j = 0; j < films.size(); j++)
             {
-                if(!arrayListFilms.contains(films.get(j))) //Introduce a la lista la película si ya no se encontraba antes
+                if(!arrayListFilmsName.contains(films.get(j).getTitle())) //Introduce a la lista la película si ya no se encontraba antes
                 {
                     arrayListFilms.add(films.get(j));
+                    arrayListFilmsName.add(films.get(j).getTitle());
                 }
             }
         }
+        Film film = new Film();
         List<Film> listFilms = arrayListFilms;
-        Page<Film> page = new PageImpl<>(listFilms, pageable, listFilms.size());
+        Page<Film> page = film.getPageFilm(listFilms, pageable);
         return page;
     }
 

@@ -1,8 +1,10 @@
 package com.practices.sergiodelamata.filmsFrontend.controller;
 
 import com.practices.sergiodelamata.filmsFrontend.model.Actor;
+import com.practices.sergiodelamata.filmsFrontend.model.Film;
 import com.practices.sergiodelamata.filmsFrontend.paginator.PageRender;
 import com.practices.sergiodelamata.filmsFrontend.service.IActorService;
+import com.practices.sergiodelamata.filmsFrontend.service.IFilmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,51 +18,48 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/actors")
 public class ActorController {
     @Autowired
+    IFilmService filmService;
+    @Autowired
     IActorService actorService;
 
-    @GetMapping (value = {"/", "/home", ""})
-    public String home(Model model)
+    @GetMapping(value = {"/", ""})
+    public String home(Model model, @RequestParam(name="page", defaultValue = "0") int page)
     {
-        return "home";
+        Pageable pageable = PageRequest.of(page, 5);
+        Page<Actor> list = actorService.searchAll(pageable);
+        PageRender<Actor> pageRender = new PageRender<Actor>("/actors", list);
+
+        model.addAttribute("title", "FilmingApp | Listado de actores");
+        model.addAttribute("listActors", list);
+        model.addAttribute("page", pageRender);
+        return "actors";
     }
 
     @GetMapping("/new")
     public String newActor(Model model)
     {
-        model.addAttribute("title", "Nuevo actor");
         Actor actor = new Actor();
+        model.addAttribute("title", "Nuevo actor");
         model.addAttribute("actor", actor);
-        return "actors/formActor";
-    }
-
-    @GetMapping("/search")
-    public String searchActor(Model model)
-    {
-        return "actors/searchActor";
-    }
-
-    @GetMapping("/list")
-    public String listActors(Model model, @RequestParam(name="page", defaultValue = "0") int page)
-    {
-        Pageable pageable = PageRequest.of(page, 5);
-        Page<Actor> list = actorService.searchAll(pageable);
-        PageRender<Actor> pageRender = new PageRender<Actor>("/actors/list", list);
-
-        model.addAttribute("title", "Listado de actores");
-        model.addAttribute("listActors", list);
-        return "actors/listActors";
+        return "actors/formActorNew";
     }
 
     @GetMapping("/{idActor}")
-    public String searchActorById(Model model, @PathVariable("idActor") Integer idActor)
+    public String searchActorById(Model model, @PathVariable("idActor") Integer idActor,
+                                  @RequestParam(name="mode", defaultValue = "request") String mode)
     {
         Actor actor = actorService.searchActorById(idActor);
+        model.addAttribute("title", "FilmingApp | Consultar datos de película");
+        model.addAttribute("mode", mode);
+        model.addAttribute("header", "Consultar datos de película");
         model.addAttribute("actor", actor);
         return "actors/formActor";
     }
 
     @GetMapping("/name")
-    public String searchActorByName(Model model, @RequestParam(name="page", defaultValue = "0") int page, @RequestParam("name") String name)
+    public String searchActorByName(Model model, @RequestParam(name="page", defaultValue = "0") int page,
+                                    @RequestParam("name") String name,
+                                    @RequestParam(name="typeSearch", defaultValue = "name") String typeSearch)
     {
         Pageable pageable = PageRequest.of(page, 5);
         Page<Actor> list;
@@ -72,12 +71,37 @@ public class ActorController {
         {
             list = actorService.searchActorsByName(name, pageable);
         }
-        PageRender<Actor> pageRender = new PageRender<Actor>("/list", list);
-        model.addAttribute("title", "Listado de actores por nombre");
+        PageRender<Actor> pageRender = new PageRender<Actor>("/actors/name?name=" + name + "&typeSearch=" + typeSearch, list);
+        model.addAttribute("title", "FilmingApp | Listado de actores por nombre");
         model.addAttribute("listActors", list);
         model.addAttribute("page", pageRender);
+        model.addAttribute("typeSearch", typeSearch);
         return "actors/listActors";
     }
+
+    @GetMapping("/filmTitle")
+    public String searchActorByFilmTitle(Model model, @RequestParam(name="page", defaultValue = "0") int page,
+                                    @RequestParam("filmTitle") String filmTitle,
+                                    @RequestParam(name="typeSearch", defaultValue = "filmTitle") String typeSearch)
+    {
+        Pageable pageable = PageRequest.of(page, 5);
+        Page<Actor> list;
+        if(filmTitle.equals(""))
+        {
+            list = actorService.searchAll(pageable);
+        }
+        else
+        {
+            list = filmService.searchActorsByFilmsTitle(filmTitle, pageable);
+        }
+        PageRender<Actor> pageRender = new PageRender<Actor>("/actors/filmTitle?filmTitle=" + filmTitle + "&typeSearch=" + typeSearch, list);
+        model.addAttribute("title", "FilmingApp | Listado de actores por título de película");
+        model.addAttribute("listActors", list);
+        model.addAttribute("page", pageRender);
+        model.addAttribute("typeSearch", typeSearch);
+        return "actors/listActors";
+    }
+
 
     @PostMapping("/save")
     public String saveActor(Model model, Actor actor, RedirectAttributes attributes)

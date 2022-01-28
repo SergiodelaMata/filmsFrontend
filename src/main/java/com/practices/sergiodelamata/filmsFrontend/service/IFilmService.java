@@ -1,5 +1,6 @@
 package com.practices.sergiodelamata.filmsFrontend.service;
 
+import com.practices.sergiodelamata.filmsFrontend.model.Actor;
 import com.practices.sergiodelamata.filmsFrontend.model.Film;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,9 @@ public interface IFilmService {
     Page<Film> searchFilmsByDirection(String direction, Pageable pageable);
 
     Page<Film> searchFilmsByGenres(String genres, Pageable pageable);
+
+    Page<Actor> searchActorsByFilmsTitle(String title, Pageable pageable);
+
 
     void saveFilm(Film film);
 
