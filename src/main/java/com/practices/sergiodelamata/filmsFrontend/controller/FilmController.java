@@ -62,6 +62,7 @@ public class FilmController {
         Film film = filmService.searchFilmById(idFilm);
         model.addAttribute("title", "FilmingApp | Consultar datos de película");
         model.addAttribute("mode", mode);
+        model.addAttribute("header", "Consultar datos de película");
         model.addAttribute("film", film);
         return "films/formFilm";
     }
@@ -222,6 +223,7 @@ public class FilmController {
         Film film = filmService.searchFilmById(idFilm);
         model.addAttribute("title", "FilmingApp | Editar datos de película");
         model.addAttribute("mode", mode);
+        model.addAttribute("header", "Editar datos de película");
         model.addAttribute("film", film);
         return "films/formFilm";
     }
