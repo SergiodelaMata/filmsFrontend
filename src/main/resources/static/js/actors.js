@@ -17,7 +17,7 @@ window.addEventListener("DOMContentLoaded", function() {
     }
     deleteActorsButtons = document.getElementsByClassName("delete-actor");
     for (var i = 0; i < deleteActorsButtons.length; i++) {
-        deleteActorsButtons[i].addEventListener("click", deleteFilm, false);
+        deleteActorsButtons[i].addEventListener("click", deleteActor, false);
     }
 }, false);
 
@@ -31,7 +31,7 @@ const editActor = async function(){
     window.location.href = "/actors/edit/" + idActor + "?mode=edit";
 }
 
-const deleteFilm = async function () {
+const deleteActor = async function () {
     const idActor = this.getAttribute("idActor");
     var actionConfirmed = confirm("¿Estás seguro de que desea eliminar a este actor?");
     if(actionConfirmed) {

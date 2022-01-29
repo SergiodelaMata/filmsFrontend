@@ -108,7 +108,7 @@ public class ActorController {
         actorService.saveActor(actor);
         model.addAttribute("title", "Nuevo actor");
         attributes.addFlashAttribute("msg", "Los datos del actor se han guardado correctamente.");
-        return "redirect:/actors";
+        return "actors";
     }
 
     @PutMapping ("/save")
@@ -131,7 +131,7 @@ public class ActorController {
         return "actors/formActor";
     }
 
-    @GetMapping("/delete/{idActor}")
+    @DeleteMapping("/delete/{idActor}")
     public String deleteActor(Model model, @PathVariable("idActor") Integer idActor, RedirectAttributes attributes)
     {
         actorService.deleteActor(idActor);
