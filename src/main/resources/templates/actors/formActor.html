@@ -8,7 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script th:src="@{/js/updateActor.js}"></script>
-    <script th:src="@{/js/insertActorFilm.js}"></script>
+    <script th:src="@{/js/insertFilmActor.js}"></script>
     <script th:src="@{/js/removeActorFilm.js}"></script>
     <script th:src="@{/js/httpRequests.js}"></script>
     <script th:src="@{/js/formTools.js}"></script>
@@ -63,7 +63,7 @@
                             <h2>Reparto de la película:</h2>
                         </div>
                         <div class="col-sm-3 d-flex justify-content-end" th:if="${mode == 'edit'}" >
-                            <a id="new-actor-film" class="btn btn-success" onClick="insertFilmActor();" th:idActor="${actor.getIdActor()}">
+                            <a id="new-film-actor" class="btn btn-success" onClick="insertFilmActor();" th:idActor="${actor.getIdActor()}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
                                 </svg>

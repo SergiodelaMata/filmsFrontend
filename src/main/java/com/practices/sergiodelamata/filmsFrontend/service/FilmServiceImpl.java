@@ -4,15 +4,12 @@ import com.practices.sergiodelamata.filmsFrontend.model.Actor;
 import com.practices.sergiodelamata.filmsFrontend.model.Film;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -20,11 +17,12 @@ public class FilmServiceImpl implements IFilmService{
     @Autowired
     RestTemplate template;
 
-    String url = "http://localhost:8001/films";
+    String urlFilms = "http://localhost:8001/films";
+    String urlActors = "http://localhost:8001/actors";
 
     @Override
     public Page<Film> searchAll(Pageable pageable) {
-        Film[] films = template.getForObject(url, Film[].class);
+        Film[] films = template.getForObject(urlFilms, Film[].class);
         Film film = new Film();
         List<Film> listFilms = Arrays.asList(films);
         Page<Film> page = film.getPageFilm(listFilms, pageable);
@@ -33,13 +31,13 @@ public class FilmServiceImpl implements IFilmService{
 
     @Override
     public Film searchFilmById(Integer idFilm) {
-        Film film = template.getForObject(url + "/" + idFilm, Film.class);
+        Film film = template.getForObject(urlFilms + "/" + idFilm, Film.class);
         return film;
     }
 
     @Override
     public Page<Film> searchFilmsByTitle(String title, Pageable pageable) {
-        Film[] films = template.getForObject(url + "/title/" + title, Film[].class);
+        Film[] films = template.getForObject(urlFilms + "/title/" + title, Film[].class);
         Film film = new Film();
         List<Film> listFilms = Arrays.asList(films);
         Page<Film> page = film.getPageFilm(listFilms, pageable);
@@ -48,7 +46,7 @@ public class FilmServiceImpl implements IFilmService{
 
     @Override
     public Page<Film> searchFilmsByYear(Integer yearInit, Integer yearEnd, Pageable pageable) {
-        Film[] films = template.getForObject(url + "/year/" + yearInit + "/" + yearEnd, Film[].class);
+        Film[] films = template.getForObject(urlFilms + "/year/" + yearInit + "/" + yearEnd, Film[].class);
         Film film = new Film();
         List<Film> listFilms = Arrays.asList(films);
         Page<Film> page = film.getPageFilm(listFilms, pageable);
@@ -57,7 +55,7 @@ public class FilmServiceImpl implements IFilmService{
 
     @Override
     public Page<Film> searchFilmsByCountry(String country, Pageable pageable) {
-        Film[] films = template.getForObject(url + "/country/" + country, Film[].class);
+        Film[] films = template.getForObject(urlFilms + "/country/" + country, Film[].class);
         Film film = new Film();
         List<Film> listFilms = Arrays.asList(films);
         Page<Film> page = film.getPageFilm(listFilms, pageable);
@@ -66,7 +64,7 @@ public class FilmServiceImpl implements IFilmService{
 
     @Override
     public Page<Film> searchFilmsByDirection(String direction, Pageable pageable) {
-        Film[] films = template.getForObject(url + "/direction/" + direction, Film[].class);
+        Film[] films = template.getForObject(urlFilms + "/direction/" + direction, Film[].class);
         Film film = new Film();
         List<Film> listFilms = Arrays.asList(films);
         Page<Film> page = film.getPageFilm(listFilms, pageable);
@@ -75,7 +73,7 @@ public class FilmServiceImpl implements IFilmService{
 
     @Override
     public Page<Film> searchFilmsByGenres(String genres, Pageable pageable) {
-        Film[] films = template.getForObject(url + "/genres/" + genres, Film[].class);
+        Film[] films = template.getForObject(urlFilms + "/genres/" + genres, Film[].class);
         Film film = new Film();
         List<Film> listFilms = Arrays.asList(films);
         Page<Film> page = film.getPageFilm(listFilms, pageable);
@@ -85,7 +83,7 @@ public class FilmServiceImpl implements IFilmService{
     @Override
     public Page<Actor> searchActorsByFilmsTitle(String title, Pageable pageable)
     {
-        Film[] films = template.getForObject(url + "/title/" + title, Film[].class);
+        Film[] films = template.getForObject(urlFilms + "/title/" + title, Film[].class);
         List<Film> listFilms = Arrays.asList(films);
         ArrayList<Film> arrayListFilms = new ArrayList<>(listFilms);
         ArrayList<Actor> arrayListActor = new ArrayList<>();
@@ -104,7 +102,6 @@ public class FilmServiceImpl implements IFilmService{
         }
         Actor actor = new Actor();
         List<Actor> listActors = arrayListActor;
-        //Page<Actor> page = new PageImpl<>(listActors, pageable, listActors.size());
         Page<Actor> page = actor.getPageActor(listActors, pageable);
         return page;
     }
@@ -113,27 +110,55 @@ public class FilmServiceImpl implements IFilmService{
     public void saveFilm(Film film) {
         if(film.getIdFilm() != null && film.getIdFilm() > 0)
         {
-            template.put(url, film);
+            template.put(urlFilms, film);
         }
         else
         {
-            template.postForObject(url, film, String.class);
+            template.postForObject(urlFilms, film, String.class);
         }
     }
 
     @Override
     public void deleteFilm(Integer idFilm) {
-        template.delete(url + "/" + idFilm);
+        template.delete(urlFilms + "/" + idFilm);
     }
 
     @Override
     public void insertActor(Integer idFilm, Integer idActor) {
-        template.put(url + "/insert/actor/" + idFilm + "/" + idActor, String.class);
+        template.put(urlFilms + "/insert/actor/" + idFilm + "/" + idActor, String.class);
     }
 
     @Override
     public void removeActor(Integer idFilm, Integer idActor) {
-        System.out.println(url + "/delete/actor/" + idFilm + "/" + idActor);
-        template.delete(url + "/delete/actor/" + idFilm + "/" + idActor, String.class);
+        template.delete(urlFilms + "/delete/actor/" + idFilm + "/" + idActor, String.class);
     }
+
+    @Override
+    public List<Film> searchFilmsNotInActor(Actor actor) {
+        Film[] films = template.getForObject(urlFilms, Film[].class);
+        List<Film> listFilms = actor.getFilms();
+        ArrayList<String> listTitlesFilms = new ArrayList<>();
+        for(int i = 0; i < listFilms.size(); i++)
+        {
+            listTitlesFilms.add(listFilms.get(i).getTitle());
+        }
+        List<Film> completeListFilms = Arrays.asList(films);
+        ArrayList<String> completeListTitleFilms = new ArrayList<>();
+        for(int i = 0; i < completeListFilms.size(); i++)
+        {
+            completeListTitleFilms.add(completeListFilms.get(i).getTitle());
+        }
+        ArrayList<Film> listFilmsAux = new ArrayList<>();
+        for(int i = 0; i < completeListFilms.size(); i++)
+        {
+            //Comprueba si el título de la película comparada ya se encuentra en la lista de los títulos de las películas que
+            // ya tiene el actor antes de introducirlo en la lista auxiliar
+            if(!listTitlesFilms.contains(completeListTitleFilms.get(i)))
+            {
+                listFilmsAux.add(completeListFilms.get(i));
+            }
+        }
+        return listFilmsAux;
+    }
+
 }

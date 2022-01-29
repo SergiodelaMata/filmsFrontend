@@ -5,6 +5,8 @@ import com.practices.sergiodelamata.filmsFrontend.model.Film;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface IFilmService {
     Page<Film> searchAll(Pageable pageable);
 
@@ -22,7 +24,6 @@ public interface IFilmService {
 
     Page<Actor> searchActorsByFilmsTitle(String title, Pageable pageable);
 
-
     void saveFilm(Film film);
 
     void deleteFilm(Integer idFilm);
@@ -31,4 +32,5 @@ public interface IFilmService {
 
     void removeActor(Integer idFilm, Integer idActor);
 
+    List<Film> searchFilmsNotInActor(Actor actor);
 }

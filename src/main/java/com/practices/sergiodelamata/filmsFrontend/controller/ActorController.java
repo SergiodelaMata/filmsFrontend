@@ -14,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/actors")
 public class ActorController {
@@ -100,6 +102,17 @@ public class ActorController {
         model.addAttribute("page", pageRender);
         model.addAttribute("typeSearch", typeSearch);
         return "actors/listActors";
+    }
+
+    @GetMapping("/film/{idActor}")
+    public String insertActorToFilm(Model model, @PathVariable("idActor") Integer idActor){
+        Actor actor = actorService.searchActorById(idActor);
+        List<Film> listFilmNotMadeByActor = filmService.searchFilmsNotInActor(actor);
+        model.addAttribute("title", "FilmingApp | Nueva película para el actor");
+        model.addAttribute("idActor", idActor);
+        model.addAttribute("listFilms", listFilmNotMadeByActor);
+
+        return "actors/formAddFilmActor";
     }
 
     @PostMapping("/save")
