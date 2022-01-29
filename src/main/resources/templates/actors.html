@@ -12,8 +12,8 @@
     <script th:src="@{/js/httpRequests.js}"></script>
 </head>
 <body>
-    <div class="container">
-        <h1 class="text-center" style="margin-top: 20px;">Catálogo de actores</h1>
+    <div class="container" style="margin-top: 20px; margin-bottom: 20px;">
+        <h1 class="text-center">Catálogo de actores</h1>
         <hr>
         <div class="container card">
             <div class="container d-flex justify-content-center"  style="margin-top:10px;">
@@ -47,11 +47,11 @@
                         </div>
                         <div class="container card">
                             <div class="visible row" id="searchingByName" style="margin:10px;">
-                                <for for="searchName">Realice su búsqueda según el nombre de un actor:</for>
+                                <label for="searchName">Realice su búsqueda según el nombre de un actor:</label>
                                 <input id="searchName" type="text" placeholder="Nombre del actor">
                             </div>
                             <div class="none row" id="searchingByTitleFilm"  style="margin:10px;">
-                                <for for="searchTitleFilm">Realice su búsqueda según el título de la película:</for>
+                                <label for="searchTitleFilm">Realice su búsqueda según el título de la película:</label>
                                 <input id="searchTitleFilm" type="text" placeholder="Título de la película">
                             </div>
                         </div>

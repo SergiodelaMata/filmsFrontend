@@ -1,3 +1,35 @@
+body {
+    background: rgba(0, 30, 184, 0.7);
+    border-color: #1c1f23;
+}
+
+label {
+    background: rgba(0, 30, 184, 0.7);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: black;
+    text-align: center;
+}
+
+input, label, a {
+    color: black;
+}
+
+thead tr{
+    background-color: black;
+    color: white;
+}
+
+tbody tr:nth-child(even){
+    background: #90b5e3;
+}
+
+tbody tr:nth-child(odd){
+    background: #a7b2bd;
+}
+
+
 .visible{
     display:inline;
 }

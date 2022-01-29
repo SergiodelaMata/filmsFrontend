@@ -12,8 +12,8 @@
     <script th:src="@{/js/httpRequests.js}"></script>
 </head>
 <body>
-    <div class="container">
-        <h1 class="text-center" style="margin-top: 20px;">Catálogo de películas</h1>
+    <div class="container" style="margin-top: 20px; margin-bottom: 20px;">
+        <h1 class="text-center">Catálogo de películas</h1>
         <hr>
         <div class="container card">
             <div class="container d-flex justify-content-center"  style="margin-top:10px;">
@@ -55,7 +55,7 @@
                         </div>
                         <div class="container card">
                             <div class="visible row" id="searchingByTitle"  style="margin:10px;">
-                                <for for="searchTitle">Realice su búsqueda según el título de la película:</for>
+                                <label for="searchTitle">Realice su búsqueda según el título de la película:</label>
                                 <input id="searchTitle" type="text" placeholder="Título de la película">
                             </div>
                             <div class="none row" id="searchingByYear" style="margin:10px;">
@@ -66,19 +66,19 @@
                                 <input id="searchYearEnd" type="number" min="1900" max="2100" placeholder="Año de inicio de fin de intervalo">
                             </div>
                             <div class="none row" id="searchingByCountry" style="margin:10px;">
-                                <for for="searchCountry">Realice su búsqueda según el país en el que se realizó la película:</for>
+                                <label for="searchCountry">Realice su búsqueda según el país en el que se realizó la película:</label>
                                 <input id="searchCountry" type="text" placeholder="País de procedencia de la película">
                             </div>
                             <div class="none row" id="searchingByDirection" style="margin:10px;">
-                                <for for="searchDirection">Realice su búsqueda según la dirección de la película:</for>
+                                <label for="searchDirection">Realice su búsqueda según la dirección de la película:</label>
                                 <input id="searchDirection" type="text" placeholder="Dirección de la película">
                             </div>
                             <div class="none row" id="searchingByGenres" style="margin:10px;">
-                                <for for="searchGenres">Realice su búsqueda según el género de la película:</for>
+                                <label for="searchGenres">Realice su búsqueda según el género de la película:</label>
                                 <input id="searchGenres" type="text" placeholder="Género de la película">
                             </div>
                             <div class="none row" id="searchingByActorName" style="margin:10px;">
-                                <for for="searchActorName">Realice su búsqueda según el nombre de un actor:</for>
+                                <label for="searchActorName">Realice su búsqueda según el nombre de un actor:</label>
                                 <input id="searchActorName" type="text" placeholder="Nombre del actor">
                             </div>
                         </div>

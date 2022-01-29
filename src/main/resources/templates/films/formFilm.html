@@ -21,7 +21,7 @@
             <div class="d-flex justify-content-center" style="margin-top:10px;">
                 <div class="container card">
                     <div class="col-sm-1"></div>
-                    <div class="container col-sm-10 mx-auto">
+                    <div class="container col-sm-10 mx-auto" style="margin-top:10px; margin-bottom: 10px;">
                         <img th:src="${film.getImage()}" style="width:90%;">
                     </div>
                     <div class="col-sm-1"></div>
@@ -75,7 +75,7 @@
             <div class="d-flex justify-content-center container card" style="margin:10px;">
                 <div class="row">
                     <div class="d-flex d-inline container" style="margin-top:10px; margin-bottom: 10px;">
-                        <div class="col-sm-9">
+                        <div th:classappend="${mode == 'edit'} ? 'col-sm-9' : 'col-sm-12'">
                             <h2>Reparto de la película:</h2>
                         </div>
                         <div class="col-sm-3 d-flex justify-content-end" th:if="${mode == 'edit'}" >
@@ -90,8 +90,8 @@
                 </div>
 
                 <div class="row">
-                    <div class="d-flex d-inline justify-content-center container card col-sm-2" th:each="actor : ${film.getActors()}">
-                        <img th:src="${actor.getImage()}">
+                    <div class="d-flex d-inline justify-content-center container card col-sm-2" th:each="actor : ${film.getActors()}"  style="margin-top:10px; margin-bottom: 10px;">
+                        <img th:src="${actor.getImage()}" style="margin-top:10px; margin-bottom: 10px;">
                         <div class="card-body">
                             <h5 th:text="${actor.getName()}"></h5>
                             <a class="btn btn-danger btn-circle delete-relation" th:if="${mode == 'edit'}" th:idFilm="${film.getIdFilm()}" th:idActor="${actor.getIdActor()}" title="Eliminar actor del reparto de la película">

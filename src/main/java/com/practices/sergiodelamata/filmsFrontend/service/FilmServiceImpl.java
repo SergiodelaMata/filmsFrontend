@@ -134,26 +134,29 @@ public class FilmServiceImpl implements IFilmService{
     }
 
     @Override
+    /*
+     * Devuelve el listado de todas las películas en las que un actor no participa
+     */
     public List<Film> searchFilmsNotInActor(Actor actor) {
         Film[] films = template.getForObject(urlFilms, Film[].class);
         List<Film> listFilms = actor.getFilms();
-        ArrayList<String> listTitlesFilms = new ArrayList<>();
+        ArrayList<Integer> listIdFilms = new ArrayList<>();
         for(int i = 0; i < listFilms.size(); i++)
         {
-            listTitlesFilms.add(listFilms.get(i).getTitle());
+            listIdFilms.add(listFilms.get(i).getIdFilm());
         }
         List<Film> completeListFilms = Arrays.asList(films);
-        ArrayList<String> completeListTitleFilms = new ArrayList<>();
+        ArrayList<Integer> completeListIdFilms = new ArrayList<>();
         for(int i = 0; i < completeListFilms.size(); i++)
         {
-            completeListTitleFilms.add(completeListFilms.get(i).getTitle());
+            completeListIdFilms.add(completeListFilms.get(i).getIdFilm());
         }
         ArrayList<Film> listFilmsAux = new ArrayList<>();
         for(int i = 0; i < completeListFilms.size(); i++)
         {
-            //Comprueba si el título de la película comparada ya se encuentra en la lista de los títulos de las películas que
+            //Comprueba si el identificador de la película comparada ya se encuentra en la lista de los títulos de las películas que
             // ya tiene el actor antes de introducirlo en la lista auxiliar
-            if(!listTitlesFilms.contains(completeListTitleFilms.get(i)))
+            if(!listIdFilms.contains(completeListIdFilms.get(i)))
             {
                 listFilmsAux.add(completeListFilms.get(i));
             }
