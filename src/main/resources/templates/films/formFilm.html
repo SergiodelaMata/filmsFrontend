@@ -30,31 +30,31 @@
                     <form id="form-film" style="margin: 10px;">
                         <input th:id="${film.getIdFilm()}" name="idFilm" style="display: none;" th:value="${film.getIdFilm()}" th:readonly="${mode == 'request'}">
                         <div class="row form-inline" style="margin-top:10px;">
-                            <label for="title" class="card-title font-weight-bold" style="margin-right:5px;"> Título:</label>
+                            <label for="title" class="card-title font-weight-bold" style="margin-right:5px;"> Título(*):</label>
                             <input id="title" name="title" type="text" th:value="${film.getTitle()}" th:readonly="${mode == 'request'}">
                         </div>
                         <div class="row form-inline" style="margin-top:10px;">
-                            <label for="year" class="card-title font-weight-bold" style="margin-right:5px;"> Año de salida:</label>
+                            <label for="year" class="card-title font-weight-bold" style="margin-right:5px;"> Año de salida(*):</label>
                             <input id="year" name="year" type="number" min="1900" max="2100" th:value="${film.getYear()}" th:readonly="${mode == 'request'}">
                         </div>
                         <div class="row form-inline" style="margin-top:10px;">
-                            <label for="duration" class="card-title font-weight-bold" style="margin-right:5px;">Duración (min):</label>
+                            <label for="duration" class="card-title font-weight-bold" style="margin-right:5px;">Duración (min)(*):</label>
                             <input id="duration" name="duration" type="number" min="0" max="360" th:value="${film.getDuration()}" th:readonly="${mode == 'request'}">
                         </div>
                         <div class="row form-inline" style="margin-top:10px;">
-                            <label for="country" class="card-title font-weight-bold" style="margin-right:5px;">País de origen:</label>
+                            <label for="country" class="card-title font-weight-bold" style="margin-right:5px;">País de origen(*):</label>
                             <input id="country" name="country" type="text" th:value="${film.getCountry()}" th:readonly="${mode == 'request'}">
                         </div>
                         <div class="row form-inline" style="margin-top:10px;">
-                            <label for="direction" class="card-title font-weight-bold" style="margin-right:5px;">Personal encargado de la dirección:</label>
+                            <label for="direction" class="card-title font-weight-bold" style="margin-right:5px;">Personal encargado de la dirección(*):</label>
                             <input id="direction" name="direction" type="text" th:value="${film.getDirection()}" th:readonly="${mode == 'request'}">
                         </div>
                         <div class="row form-inline" style="margin-top:10px;">
-                            <label for="genres" class="card-title font-weight-bold" style="margin-right:5px;">Géneros a los que pertenece:</label>
+                            <label for="genres" class="card-title font-weight-bold" style="margin-right:5px;">Géneros a los que pertenece(*):</label>
                             <input id="genres" name="genres" type="text" th:value="${film.getGenres()}">
                         </div>
                         <div class="row form-inline" style="margin-top:10px;">
-                            <label for="synopsis" class="card-title font-weight-bold" style="margin-right:5px;">Sinopsis:</label>
+                            <label for="synopsis" class="card-title font-weight-bold" style="margin-right:5px;">Sinopsis(*):</label>
                             <textarea id="synopsis" name="synopsis" type="text" cols="400" rows="5" th:text="${film.getSynopsis()}" th:readonly="${mode == 'request'}"></textarea>
                         </div>
                         <div class="row form-inline" style="margin-top:10px;">

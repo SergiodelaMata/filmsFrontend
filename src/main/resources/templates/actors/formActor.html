@@ -30,15 +30,15 @@
                     <form id="form-actor" style="margin: 10px;">
                         <input th:id="${actor.getIdActor()}" name="idActor" style="display: none;" th:value="${actor.getIdActor()}" th:readonly="${mode == 'request'}">
                         <div class="row form-inline" style="margin-top:10px;">
-                            <label for="name" class="card-title font-weight-bold" style="margin-right:5px;"> Nombre:</label>
+                            <label for="name" class="card-title font-weight-bold" style="margin-right:5px;"> Nombre(*):</label>
                             <input id="name" name="name" type="text" th:value="${actor.getName()}" th:readonly="${mode == 'request'}">
                         </div>
                         <div class="row form-inline" style="margin-top:10px;">
-                            <label for="birthDate" class="card-title font-weight-bold" style="margin-right:5px;">Fecha de nacimiento:</label>
+                            <label for="birthDate" class="card-title font-weight-bold" style="margin-right:5px;">Fecha de nacimiento(*):</label>
                             <input id="birthDate" name="birthDate" type="date" th:value="${actor.getBirthDateFormat()}" th:readonly="${mode == 'request'}">
                         </div>
                         <div class="row form-inline" style="margin-top:10px;">
-                            <label for="countryBirth" class="card-title font-weight-bold" style="margin-right:5px;">País de nacimiento:</label>
+                            <label for="countryBirth" class="card-title font-weight-bold" style="margin-right:5px;">País de nacimiento(*):</label>
                             <input id="countryBirth" name="countryBirth" type="text" th:value="${actor.getCountryBirth()}" th:readonly="${mode == 'request'}">
                         </div>
                         <div class="row form-inline" style="margin-top:10px;">
