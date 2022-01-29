@@ -103,12 +103,12 @@ public class ActorController {
     }
 
     @PostMapping("/save")
-    public String saveActor(Model model, Actor actor, RedirectAttributes attributes)
+    public String saveActor(Model model, @RequestBody Actor actor, RedirectAttributes attributes)
     {
         actorService.saveActor(actor);
         model.addAttribute("title", "Nuevo actor");
         attributes.addFlashAttribute("msg", "Los datos del actor se han guardado correctamente.");
-        return "redirect:/actors/list";
+        return "redirect:/actors";
     }
 
     @PutMapping ("/save")
@@ -136,19 +136,19 @@ public class ActorController {
     {
         actorService.deleteActor(idActor);
         attributes.addFlashAttribute("msg", "Se ha borrado el actor correctamente.");
-        return "redirect:/actors/list";
+        return "actors";
     }
 
     @PutMapping("/insert/film/{idActor}/{idFilm}")
     public String insertFilm(@PathVariable("idActor") Integer idActor, @PathVariable("idFilm") Integer idFilm){
         actorService.insertFilm(idActor, idFilm);
-        return "redirect:/actors/list";
+        return "actors";
     }
 
     @DeleteMapping("/delete/film/{idActor}/{idFilm}")
     public String deleteFilm(@PathVariable("idActor") Integer idActor, @PathVariable("idFilm") Integer idFilm){
         actorService.removeFilm(idActor, idFilm);
-        return "redirect:/actors/list";
+        return "actors";
     }
 
 }
