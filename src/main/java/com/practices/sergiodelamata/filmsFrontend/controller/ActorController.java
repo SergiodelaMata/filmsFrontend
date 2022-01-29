@@ -49,9 +49,9 @@ public class ActorController {
                                   @RequestParam(name="mode", defaultValue = "request") String mode)
     {
         Actor actor = actorService.searchActorById(idActor);
-        model.addAttribute("title", "FilmingApp | Consultar datos de película");
+        model.addAttribute("title", "FilmingApp | Consultar datos de actor");
         model.addAttribute("mode", mode);
-        model.addAttribute("header", "Consultar datos de película");
+        model.addAttribute("header", "Consultar datos de actor");
         model.addAttribute("actor", actor);
         return "actors/formActor";
     }
@@ -102,7 +102,6 @@ public class ActorController {
         return "actors/listActors";
     }
 
-
     @PostMapping("/save")
     public String saveActor(Model model, Actor actor, RedirectAttributes attributes)
     {
@@ -112,11 +111,22 @@ public class ActorController {
         return "redirect:/actors/list";
     }
 
+    @PutMapping ("/save")
+    public String updateFilm(Model model, @RequestBody Actor actor, RedirectAttributes attributes)
+    {
+        actorService.saveActor(actor);
+        model.addAttribute("title", "Actor actualizado");
+        attributes.addFlashAttribute("msg", "Los datos del actor se han guardado correctamente.");
+        return "films";
+    }
+
     @GetMapping("/edit/{idActor}")
-    public String editActor(Model model, @PathVariable("idActor") Integer idActor)
+    public String editActor(Model model, @PathVariable("idActor") Integer idActor, @RequestParam(name="mode", defaultValue = "edit") String mode)
     {
         Actor actor = actorService.searchActorById(idActor);
-        model.addAttribute("title", "Editar datos del actor");
+        model.addAttribute("title", "FilmingApp | Editar datos del actor");
+        model.addAttribute("mode", mode);
+        model.addAttribute("header", "Editar datos de actor");
         model.addAttribute("actor", actor);
         return "actors/formActor";
     }

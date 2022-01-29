@@ -213,11 +213,10 @@ public class FilmController {
     public String updateFilm(Model model, @RequestBody Film film, RedirectAttributes attributes)
     {
         filmService.saveFilm(film);
-        model.addAttribute("title", "Nueva película");
+        model.addAttribute("title", "Película actualizada");
         attributes.addFlashAttribute("msg", "Los datos de la película se han guardado correctamente.");
         return "films";
     }
-
 
     @GetMapping("/edit/{idFilm}")
     public String editFilm(Model model, @PathVariable("idFilm") Integer idFilm, @RequestParam(name="mode", defaultValue = "edit") String mode)

@@ -4,7 +4,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.List;
 public class Actor {
     private Integer idActor;
     private String name;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthDate;
     private String countryBirth;
     private String image;
@@ -57,6 +60,14 @@ public class Actor {
 
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public String getBirthDateFormat()
+    {
+        String pattern = "yyyy-MM-dd";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        String date = simpleDateFormat.format(this.birthDate);
+        return date;
     }
 
     public String getCountryBirth() {
