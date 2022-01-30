@@ -211,6 +211,8 @@ public class FilmController {
     @PutMapping ("/save")
     public String updateFilm(Model model, @RequestBody Film film, RedirectAttributes attributes)
     {
+        Film filmAux = filmService.searchFilmById(film.getIdFilm());
+        film.setActors(filmAux.getActors());
         filmService.saveFilm(film);
         model.addAttribute("title", "Película actualizada");
         attributes.addFlashAttribute("msg", "Los datos de la película se han guardado correctamente.");

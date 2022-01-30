@@ -127,6 +127,8 @@ public class ActorController {
     @PutMapping ("/save")
     public String updateFilm(Model model, @RequestBody Actor actor, RedirectAttributes attributes)
     {
+        Actor actorAux = actorService.searchActorById(actor.getIdActor());
+        actor.setFilms(actorAux.getFilms());
         actorService.saveActor(actor);
         model.addAttribute("title", "Actor actualizado");
         attributes.addFlashAttribute("msg", "Los datos del actor se han guardado correctamente.");
