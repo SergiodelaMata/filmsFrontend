@@ -17,8 +17,7 @@ public class FilmServiceImpl implements IFilmService{
     @Autowired
     RestTemplate template;
 
-    String urlFilms = "http://localhost:8001/films";
-    String urlActors = "http://localhost:8001/actors";
+    String urlFilms = "http://localhost:8090/api/films-actors/films";
 
     @Override
     public Page<Film> searchAll(Pageable pageable) {

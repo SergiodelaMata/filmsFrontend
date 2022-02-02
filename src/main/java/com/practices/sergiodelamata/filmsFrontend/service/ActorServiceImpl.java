@@ -20,8 +20,7 @@ public class ActorServiceImpl implements IActorService {
     @Autowired
     RestTemplate template;
 
-    String urlActors = "http://localhost:8001/actors";
-    String urlFilms = "http://localhost:8001/films";
+    String urlActors = "http://localhost:8090/api/films-actors/actors";
 
     @Override
     public Page<Actor> searchAll(Pageable pageable) {
