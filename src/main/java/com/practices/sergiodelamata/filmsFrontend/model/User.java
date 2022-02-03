@@ -2,6 +2,7 @@ package com.practices.sergiodelamata.filmsFrontend.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class User {
     private Integer idUser;
@@ -80,5 +81,19 @@ public class User {
     public void setIdUser(Integer idUser) {
         this.idUser = idUser;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return Objects.equals(idUser, user.idUser);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idUser);
+    }
+
 
 }

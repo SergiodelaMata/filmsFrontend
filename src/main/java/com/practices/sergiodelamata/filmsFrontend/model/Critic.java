@@ -1,6 +1,7 @@
 package com.practices.sergiodelamata.filmsFrontend.model;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Critic {
     private Integer idCritic;
@@ -68,4 +69,18 @@ public class Critic {
     public void setIdCritic(Integer idCritic) {
         this.idCritic = idCritic;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        Critic critic = (Critic) o;
+        return Objects.equals(idCritic, critic.idCritic);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idCritic);
+    }
+
 }
