@@ -1,6 +1,13 @@
 package com.practices.sergiodelamata.filmsFrontend.model;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class Critic {
@@ -82,5 +89,24 @@ public class Critic {
     public int hashCode() {
         return Objects.hash(idCritic);
     }
+
+    public Page<Critic> getPageCritic(List<Critic> listCritics, Pageable pageable){
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+        List<Critic> list;
+        if(listCritics.size() < startItem)
+        {
+            list = Collections.emptyList();
+        }
+        else
+        {
+            int toIndex = Math.min(startItem + pageSize, listCritics.size());
+            list = listCritics.subList(startItem, toIndex);
+        }
+        Page<Critic> page = new PageImpl<>(list, PageRequest.of(currentPage, pageSize), listCritics.size());
+        return page;
+    }
+
 
 }
