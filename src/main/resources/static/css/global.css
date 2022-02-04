@@ -56,3 +56,8 @@ tbody tr:nth-child(odd){
     font-size: 12px;
     line-height: 1.42857;
 }
+
+.center {
+    margin: auto;
+    width: 50%;
+}

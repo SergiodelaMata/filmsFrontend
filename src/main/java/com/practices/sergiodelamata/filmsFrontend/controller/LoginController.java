@@ -17,12 +17,13 @@ public class LoginController {
     @GetMapping("/login")
     public String login(@RequestParam(value = "error", required = false) String error,
                         Model model, Principal principal) {
+        model.addAttribute("title", "FilmingApp | Login");
         if (principal != null) {
-            return "redirect:/ccursos";
+            return "redirect:/home";
         }
         if (error != null) {
             model.addAttribute("msg",
-                    "Error al iniciar sesión: Nombre de usuario o contraseña incorrecta, " +
+                    "¡Error al iniciar sesión: Nombre de usuario o contraseña incorrecta, " +
                             "por favor vuelva a intentarlo!");
         }
         return "login";

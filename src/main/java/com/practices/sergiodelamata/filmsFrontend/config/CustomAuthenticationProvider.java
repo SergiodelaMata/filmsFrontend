@@ -26,16 +26,16 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(final Authentication authentication) throws
             AuthenticationException {
-        final String username = authentication.getName();
+        final String email = authentication.getName();
         String password = authentication.getCredentials().toString();
-        UserLogin userLogged = userService.loginSecurity(username, password);
+        UserLogin userLogged = userService.loginSecurity(email, password);
         if (userLogged != null) {
             final List<GrantedAuthority> grantedAuths = new
                     ArrayList<GrantedAuthority>();
             for (Rol rol : userLogged.getRols()) {
                 grantedAuths.add(new SimpleGrantedAuthority(rol.getAuthority()));
             }
-            final UserDetails principal = new User(username, password, grantedAuths);
+            final UserDetails principal = new User(email, password, grantedAuths);
             final Authentication auth = new
                     UsernamePasswordAuthenticationToken(principal, password, grantedAuths);
             return auth;
