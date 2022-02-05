@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<html xmlns:th="http://www.thymeleaf.org" lang="es"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>FilmingApp | Aplicación de visualización de información de películas y sus repartos</title>
@@ -21,7 +22,7 @@
                     <div class="container">
                         <div class="container col-sm-3"></div>
                         <div class="container col-sm-6">
-                            <img th:src="@{/img/film.png}" style="width:100%; padding: 10px;" alt="Icono película">
+                            <img sec:authorize="isAuthenticated()" th:src="@{/img/film.png}" style="width:100%; padding: 10px;" alt="Icono película">
                         </div>
                         <div class="container col-sm-3"></div>
                     </div>
@@ -46,7 +47,7 @@
                     <div class="container">
                         <div class="container col-sm-3"></div>
                         <div class="container col-sm-6">
-                            <img th:src="@{/img/actor.png}" style="width:100%; padding: 10px;" alt="Icono actor">
+                            <img sec:authorize="isAuthenticated()" th:src="@{/img/actor.png}" style="width:100%; padding: 10px;" alt="Icono actor">
                         </div>
                         <div class="container col-sm-3"></div>
                     </div>
