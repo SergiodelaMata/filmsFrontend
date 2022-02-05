@@ -13,21 +13,12 @@
 </head>
 <body>
     <div class="container" style="margin-top: 20px; margin-bottom: 20px;">
+        <nav th:replace="navbar::navbar"></nav>
         <h1 class="text-center">Catálogo de películas</h1>
         <hr>
-        <nav th:replace="navbar::navbar"></nav>
         <div class="container card">
-            <div class="container"  style="margin-top:10px;">
-                <div class="row col-3">
-                    <a class="btn btn-success w-100" th:href="@{/films/new}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
-                        </svg>
-                        Nueva película
-                    </a>
-                </div>
-            </div>
             <div class="container" style="margin-top: 10px;">
+                <h3>Buscar película:</h3>
                 <form id="searchFilmForm">
                     <div id="search" class="container card" style="padding-top: 10px; padding-bottom: 10px;">
                         <div>
@@ -83,6 +74,16 @@
                         </div>
                     </div>
                 </form>
+                <div class="container"  style="margin-top:10px;">
+                    <div class="row col-3">
+                        <a class="btn btn-success w-100" th:href="@{/films/new}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+                            </svg>
+                            Nueva película
+                        </a>
+                    </div>
+                </div>
                 <div class="card-body">
                     <table class="table table-border" style="table-layout: fixed; word-wrap: break-word;">
                         <thead class="thead-light">

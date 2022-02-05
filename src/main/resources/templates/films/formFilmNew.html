@@ -13,9 +13,9 @@
 </head>
 <body>
     <div class="container" style="margin-top: 20px; margin-bottom: 20px;">
+        <nav th:replace="navbar::navbar"></nav>
         <h1 class="text-center">Nueva película</h1>
         <hr>
-        <nav th:replace="navbar::navbar"></nav>
         <div class="container card">
             <form id="form-film" style="margin: 10px;">
                 <input id="idFilm" name="idFilm" style="display: none;" value="0" readonly required>

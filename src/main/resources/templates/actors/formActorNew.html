@@ -13,9 +13,9 @@
 </head>
 <body>
     <div class="container" style="margin-top: 20px; margin-bottom: 20px;">
+        <nav th:replace="navbar::navbar"></nav>
         <h1 class="text-center">Nuevo actor</h1>
         <hr>
-        <nav th:replace="navbar::navbar"></nav>
         <div class="container card">
             <form id="form-actor" th:action="@{/films/save}" method="post" style="margin: 10px;">
                 <input id="idActor" name="idActor" style="display: none;" value="0" readonly>
