@@ -10,7 +10,7 @@ public class User {
     private String password;
     private String email;
     private Boolean enable;
-    private List<Rol> rols = new ArrayList<>();
+    private List<Rol> roles = new ArrayList<>();
 
     public User(){}
 
@@ -20,7 +20,7 @@ public class User {
         this.password = password;
         this.email = email;
         this.enable = enable;
-        this.rols = rols;
+        this.roles = rols;
         this.critics = critics;
     }
 
@@ -34,12 +34,12 @@ public class User {
         this.critics = critics;
     }
 
-    public List<Rol> getRols() {
-        return rols;
+    public List<Rol> getRoles() {
+        return roles;
     }
 
-    public void setRols(List<Rol> rols) {
-        this.rols = rols;
+    public void setRoles(List<Rol> roles) {
+        this.roles = roles;
     }
 
     public Boolean getEnable() {

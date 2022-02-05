@@ -32,7 +32,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         if (userLogged != null) {
             final List<GrantedAuthority> grantedAuths = new
                     ArrayList<GrantedAuthority>();
-            for (Rol rol : userLogged.getRols()) {
+            for (Rol rol : userLogged.getRoles()) {
                 grantedAuths.add(new SimpleGrantedAuthority(rol.getAuthority()));
             }
             final UserDetails principal = new User(email, password, grantedAuths);
