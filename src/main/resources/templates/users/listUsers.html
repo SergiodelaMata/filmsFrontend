@@ -22,9 +22,9 @@
                 <form id="searchUserForm">
                     <div id="search" class="container card" style="padding-top: 10px; padding-bottom: 10px;">
                         <div>
-                            <input type="radio" id="radioSearchUsername" name="selectSearch" onClick="selectedOption()" value="username" checked>
+                            <input type="radio" id="radioSearchUsername" name="selectSearch" onClick="selectedOption()" value="username" th:checked="${typeSearch == 'username'}? checked" >
                             <label for="radioSearchUsername">Búsqueda por nombre de usuario</label>
-                            <input type="radio" id="radioSearchEmail" name="selectSearch" onClick="selectedOption()" value="email">
+                            <input type="radio" id="radioSearchEmail" name="selectSearch" onClick="selectedOption()" value="email" th:checked="${typeSearch == 'email'}? checked" >
                             <label for="radioSearchEmail">Búsqueda por email</label>
                         </div>
                         <div class="container card">

@@ -65,9 +65,7 @@ public class UserController {
         }
         else
         {
-            List<User> listUsers = new ArrayList<>();
-            listUsers.add(userService.searchUserByUsername(username));
-            list = new PageImpl<>(listUsers, PageRequest.of(0, 5), listUsers.size());
+            list = userService.searchUserByUsername(username, pageable);
         }
         PageRender<User> pageRender = new PageRender<User>("/users/username?username=" + username + "&typeSearch=" + typeSearch, list);
         model.addAttribute("title", "FilmingApp | Listado de usuarios por nombre de usuario");
@@ -90,9 +88,7 @@ public class UserController {
         }
         else
         {
-            List<User> listUsers = new ArrayList<>();
-            listUsers.add(userService.searchUserByEmail(email));
-            list = new PageImpl<>(listUsers, PageRequest.of(0, 5), listUsers.size());
+            list = userService.searchUserByEmail(email, pageable);
         }
         PageRender<User> pageRender = new PageRender<User>("/users/email?email=" + email + "&typeSearch=" + typeSearch, list);
         model.addAttribute("title", "FilmingApp | Listado de usuarios por nombre de email");
@@ -123,6 +119,7 @@ public class UserController {
     @PostMapping("/save")
     public String saveUser(Model model, @RequestBody User user, RedirectAttributes attributes)
     {
+        user.setEnable(0);
         userService.saveUser(user);
         model.addAttribute("title", "Nuevo usuario");
         attributes.addFlashAttribute("msg", "Los datos del usuario se han guardado correctamente.");
@@ -138,6 +135,21 @@ public class UserController {
         userService.saveUser(user);
         model.addAttribute("title", "Usuario actualizado");
         attributes.addFlashAttribute("msg", "Los datos del usuario se han guardado correctamente.");
+        return "users";
+    }
+
+    @PutMapping("/acceptRequest/{idUser}")
+    public String acceptRequest(Model model, @PathVariable("idUser") Integer idUser, RedirectAttributes attributes)
+    {
+        User user = userService.searchUserById(idUser);
+        List<Role> listRoles = roleService.searchAll();
+        //Se limpia la lista de roles que pudiera tener el usuario y se añade el rol nuevo que va a tener el usuario
+        user.setEnable(1);
+        user.setRoles(new ArrayList<>());
+        user.getRoles().add(listRoles.get(1));
+        userService.saveUser(user);
+        model.addAttribute("title", "Incrementado el rol del usuario");
+        attributes.addFlashAttribute("msg", "Se ha establecido un rol al usuario.");
         return "users";
     }
 
@@ -173,7 +185,7 @@ public class UserController {
     @PostMapping("/registry")
     public String saveRegistry(Model model, User user, RedirectAttributes attributes)
     {
-        user.setEnable(false);
+        user.setEnable(0);
         //Role role = roleService.searchRoleById(2); // User role
         //user.setRoles(Arrays.asList(role));
         userService.saveUser(user);

@@ -9,12 +9,12 @@ public class UserLogin {
     private String username;
     private String password;
     private String email;
-    private Boolean enable;
+    private Integer enable;
     private List<Role> roles = new ArrayList<>();
 
     public UserLogin(){}
 
-    public UserLogin(Integer idUser, String username, String password, String email, Boolean enable, List<Role> rols, List<Critic> critics) {
+    public UserLogin(Integer idUser, String username, String password, String email, Integer enable, List<Role> rols, List<Critic> critics) {
         this.idUser = idUser;
         this.username = username;
         this.password = password;
@@ -53,11 +53,11 @@ public class UserLogin {
         this.roles = roles;
     }
 
-    public Boolean getEnable() {
+    public Integer getEnable() {
         return enable;
     }
 
-    public void setEnable(Boolean enable) {
+    public void setEnable(Integer enable) {
         this.enable = enable;
     }
 

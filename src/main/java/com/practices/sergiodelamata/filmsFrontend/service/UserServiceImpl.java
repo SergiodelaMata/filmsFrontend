@@ -51,15 +51,49 @@ public class UserServiceImpl implements IUserService{
     }
 
     @Override
-    public User searchUserByUsername(String username) {
-        User user = template.getForObject(url + "/username/" + username, User.class);
-        return user;
+    public Page<User> searchUserByUsername(String username, Pageable pageable) {
+        User[] users = template.getForObject(url + "/username/" + username, User[].class);
+        List<User> listUsers = Arrays.asList(users);
+
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+        List<User> list;
+        if(listUsers.size() < startItem)
+        {
+            list = Collections.emptyList();
+        }
+        else
+        {
+            int toIndex = Math.min(startItem + pageSize, listUsers.size());
+            list = listUsers.subList(startItem, toIndex);
+        }
+
+        Page<User> page = new PageImpl<>(list, PageRequest.of(currentPage, pageSize), listUsers.size());
+        return page;
     }
 
     @Override
-    public User searchUserByEmail(String email) {
-        User user = template.getForObject(url + "/email/" + email, User.class);
-        return user;
+    public Page<User> searchUserByEmail(String email, Pageable pageable) {
+        User[] users = template.getForObject(url + "/email/" + email, User[].class);
+        List<User> listUsers = Arrays.asList(users);
+
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+        List<User> list;
+        if(listUsers.size() < startItem)
+        {
+            list = Collections.emptyList();
+        }
+        else
+        {
+            int toIndex = Math.min(startItem + pageSize, listUsers.size());
+            list = listUsers.subList(startItem, toIndex);
+        }
+
+        Page<User> page = new PageImpl<>(list, PageRequest.of(currentPage, pageSize), listUsers.size());
+        return page;
     }
 
     @Override
