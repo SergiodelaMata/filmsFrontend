@@ -10,11 +10,11 @@ public class User {
     private String password;
     private String email;
     private Boolean enable;
-    private List<Rol> roles = new ArrayList<>();
+    private List<Role> roles = new ArrayList<>();
 
     public User(){}
 
-    public User(Integer idUser, String username, String password, String email, Boolean enable, List<Rol> rols, List<Critic> critics) {
+    public User(Integer idUser, String username, String password, String email, Boolean enable, List<Role> rols, List<Critic> critics) {
         this.idUser = idUser;
         this.username = username;
         this.password = password;
@@ -34,11 +34,11 @@ public class User {
         this.critics = critics;
     }
 
-    public List<Rol> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Rol> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 

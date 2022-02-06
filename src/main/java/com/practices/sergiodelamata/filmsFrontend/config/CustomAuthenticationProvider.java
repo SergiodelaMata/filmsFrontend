@@ -1,6 +1,6 @@
 package com.practices.sergiodelamata.filmsFrontend.config;
 
-import com.practices.sergiodelamata.filmsFrontend.model.Rol;
+import com.practices.sergiodelamata.filmsFrontend.model.Role;
 import com.practices.sergiodelamata.filmsFrontend.model.UserLogin;
 import com.practices.sergiodelamata.filmsFrontend.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         if (userLogged != null) {
             final List<GrantedAuthority> grantedAuths = new
                     ArrayList<GrantedAuthority>();
-            for (Rol rol : userLogged.getRoles()) {
+            for (Role rol : userLogged.getRoles()) {
                 grantedAuths.add(new SimpleGrantedAuthority(rol.getAuthority()));
             }
             final UserDetails principal = new User(email, password, grantedAuths);
