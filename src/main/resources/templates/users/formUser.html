@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title th:title="${title}"></title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/global.css}" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script th:src="@{/js/profile.js}"></script>
+    <script th:src="@{/js/updateUser.js}"></script>
+    <script th:src="@{/js/httpRequests.js}"></script>
+    <script th:src="@{/js/formTools.js}"></script>
+</head>
+<body>
+    <div class="container" style="margin-top:20px; margin-bottom: 20px">
+        <nav th:replace="navbar::navbar"></nav>
+        <h1 class="text-center" th:text="${header}"></h1>
+        <hr>
+        <div class="container card">
+            <div class="d-flex justify-content-center" style="margin-top:10px; margin-bottom: 10px;">
+                <div class="container card">
+                    <form id="form-user" style="margin: 10px;">
+                        <input id="idUser" name="idUser" style="display: none;" th:value="${user.getIdUser()}" readonly required>
+                        <div class="row form-inline" style="margin-top:10px;">
+                            <label for="username" class="card-title font-weight-bold" style="margin-right:5px;"> Nombre de usuario(*):</label>
+                            <input id="username" name="username" type="text" th:value="${user.getUsername()}" th:readonly="${mode == 'request'}" th:required="${mode == 'edit'}">
+                        </div>
+                        <div class="row form-inline" style="margin-top:10px;">
+                            <label for="email" class="card-title font-weight-bold" style="margin-right:5px;">Email(*):</label>
+                            <input id="email" name="email" type="text" th:value="${user.getEmail()}" th:readonly="${mode == 'request'}" th:required="${mode == 'edit'}">
+                        </div>
+                        <div class="row form-inline none" style="margin-top:10px;" th:if="${mode == 'edit'}">
+                            <input id="actual-password" name="actual-password" type="password" th:value="${user.getPassword()}" required>
+                        </div>
+                        <div class="row form-inline" style="margin-top:10px;" th:if="${mode == 'edit'}">
+                            <label for="password" class="card-title font-weight-bold" style="margin-right:5px;">Contraseña(*):</label>
+                            <input id="password" name="password" type="password" value="" required>
+                        </div>
+                        <div class="row form-inline" style="margin-top:10px;" th:if="${mode == 'edit'}">
+                            <label for="verify-password" class="card-title font-weight-bold" style="margin-right:5px;">Vuelva a introducir su contraseña(*):</label>
+                            <input id="verify-password" name="verify-password" type="password" value="" required>
+                        </div>
+                        <div sec:authorize="hasAuthority('admin')" class="d-flex justify-content-center" style="margin-top:10px;">
+                            <button id="sendForm" type="submit" class="btn btn-primary"  th:if="${mode == 'edit'}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save" viewBox="0 0 16 16">
+                                    <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"/>
+                                </svg>
+                                Actualizar datos del usuario
+                            </button>
+                        </div>
+                        <div class="row form-inline" style="margin-top:10px;">
+                            <label for="rol" class="card-title font-weight-bold" style="margin-right:5px;">Rol actual:</label>
+                            <input id="rol" name="rol" type="text" th:value="${user.getEnable() == 1 ? user.getRoles().get(0).getAuthority() : 'No tiene'}" readonly>
+                        </div>
+                        <div sec:authorize="hasAuthority('admin')" th:if="${mode == 'edit'}" class="d-flex justify-content-center" style="margin-top:10px;">
+                            <a id="accept-user" class="btn btn-warning accept-user" th:if="${user.getRoles().size() == 0}" th:idUser="${user.getIdUser()}" title="Aceptar solicitud">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                                </svg>
+                                Aceptar solicitud del usuario
+                            </a>
+                            <a id="remove-user" class="btn btn-warning remove-user" th:if="${user.getRoles().size() == 0}" th:idUser="${user.getIdUser()}" title="Denegar solicitud" style="margin-left:10px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eraser" viewBox="0 0 16 16">
+                                    <path d="M8.086 2.207a2 2 0 0 1 2.828 0l3.879 3.879a2 2 0 0 1 0 2.828l-5.5 5.5A2 2 0 0 1 7.879 15H5.12a2 2 0 0 1-1.414-.586l-2.5-2.5a2 2 0 0 1 0-2.828l6.879-6.879zm2.121.707a1 1 0 0 0-1.414 0L4.16 7.547l5.293 5.293 4.633-4.633a1 1 0 0 0 0-1.414l-3.879-3.879zM8.746 13.547 3.453 8.254 1.914 9.793a1 1 0 0 0 0 1.414l2.5 2.5a1 1 0 0 0 .707.293H7.88a1 1 0 0 0 .707-.293l.16-.16z"/>
+                                </svg>
+                                Denegar solicitud del usuario
+                            </a>
+                            <a id="increase-rol" class="btn btn-warning increase-rol" th:if="${user.getRoles().size() > 0 && user.getRoles().get(0).getAuthority() == 'user'}"  th:idUser="${user.getIdUser()}" title="Subir a rol de administrador">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+                                </svg>
+                                Hacer administrador
+                            </a>
+                            <a id="decrease-rol" class="btn btn-warning decrease-rol" th:if="${user.getRoles().size() > 0 && user.getRoles().get(0).getAuthority() == 'admin'}" th:idUser="${user.getIdUser()}" title="Bajar a rol de usuario">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+                                </svg>
+                                Reducir rol a usuario consultor
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div th:if="${user.getRoles().size() > 0}" class="d-flex justify-content-center container card" style="margin:10px;">
+                <div class="row">
+                    <div class="d-flex d-inline container" style="margin-top:10px; margin-bottom: 10px;">
+                        <div>
+                            <h2>Películas a las que ha dado una crítica:</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="d-flex d-inline justify-content-center container card col-sm-2" th:each="critic, valueIndex : ${user.getCritics()}"  style="margin-top:10px; margin-bottom: 10px;">
+                        <img th:src="${films[valueIndex.index].getImage()}" style="margin-top:10px; margin-bottom: 10px;">
+                        <div class="card-body">
+                            <h5 th:text="${films[valueIndex.index].getTitle()}"></h5>
+                            <div class="row justify-content-center">
+                                <a class="btn btn-success btn-circle" th:if="${critic.getMark() >= 7}" th:text="${critic.getMark()}"></a>
+                                <a class="btn btn-warning btn-circle" th:if="${critic.getMark() < 7 && critic.getMark() >= 5}" th:text="${critic.getMark()}"></a>
+                                <a class="btn btn-danger btn-circle" th:if="${critic.getMark() < 5}" th:text="${critic.getMark()}"></a>
+                            </div>
+                            <div class="row justify-content-center" style="margin-top:10px;">
+                                <a sec:authorize="isAuthenticated()" id="edit-critic" class="btn btn-success btn-circle edit-critic" th:if="${mode == 'edit' && email == user.getEmail()}" th:idCritic="${critic.getIdCritic()}" title="Eliminar crítica" style="margin-right: 5px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                                    </svg>
+                                </a>
+                                <a sec:authorize="isAuthenticated()" id="delete-critic" class="btn btn-danger btn-circle delete-critic" th:if="${mode == 'edit'}" th:idCritic="${critic.getIdCritic()}" title="Eliminar crítica">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
