@@ -32,6 +32,11 @@
                     <label for="password" class="card-title font-weight-bold" style="margin-right:5px;">Contraseña(*):</label>
                     <input id="password" name="password" type="password" value="" required>
                 </div>
+                <div class="row form-inline" style="margin-top:10px;">
+                    <label for="verifyPassword" class="card-title font-weight-bold" style="margin-right:5px;">Vuelva a introducir su contraseña(*):</label>
+                    <input id="verifyPassword" name="verifyPassword" type="password" value="" required>
+                </div>
+
                 <div sec:authorize="hasAuthority('admin')" class="d-flex justify-content-center" style="margin-top:10px;">
                     <button id="sendForm" type="submit" class="btn btn-primary">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save" viewBox="0 0 16 16">
