@@ -1,6 +1,5 @@
 package com.practices.sergiodelamata.filmsFrontend.controller;
 
-import com.practices.sergiodelamata.filmsFrontend.config.CustomAuthenticationProvider;
 import com.practices.sergiodelamata.filmsFrontend.model.*;
 import com.practices.sergiodelamata.filmsFrontend.paginator.PageRender;
 import com.practices.sergiodelamata.filmsFrontend.service.IFilmService;
