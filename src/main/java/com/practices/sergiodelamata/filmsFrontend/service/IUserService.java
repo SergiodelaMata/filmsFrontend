@@ -10,6 +10,10 @@ public interface IUserService {
 
     User searchUserById(Integer idUser);
 
+    User searchUserByUsernameUnique(String username);
+
+    User searchUserByEmailUnique(String email);
+
     Page<User> searchUserByUsername(String username, Pageable pageable);
 
     Page<User> searchUserByEmail(String email, Pageable pageable);

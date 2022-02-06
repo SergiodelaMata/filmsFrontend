@@ -51,6 +51,20 @@ public class UserServiceImpl implements IUserService{
     }
 
     @Override
+    public User searchUserByUsernameUnique(String username)
+    {
+        User user = template.getForObject(url + "/username/" + username + "/unique", User.class);
+        return user;
+    }
+
+    @Override
+    public User searchUserByEmailUnique(String email)
+    {
+        User user = template.getForObject(url + "/email/" + email + "/unique", User.class);
+        return user;
+    }
+
+    @Override
     public Page<User> searchUserByUsername(String username, Pageable pageable) {
         User[] users = template.getForObject(url + "/username/" + username, User[].class);
         List<User> listUsers = Arrays.asList(users);

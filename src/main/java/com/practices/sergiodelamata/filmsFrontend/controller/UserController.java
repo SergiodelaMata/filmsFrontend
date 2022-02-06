@@ -1,9 +1,7 @@
 package com.practices.sergiodelamata.filmsFrontend.controller;
 
-import com.practices.sergiodelamata.filmsFrontend.model.Critic;
-import com.practices.sergiodelamata.filmsFrontend.model.Film;
-import com.practices.sergiodelamata.filmsFrontend.model.Role;
-import com.practices.sergiodelamata.filmsFrontend.model.User;
+import com.practices.sergiodelamata.filmsFrontend.config.CustomAuthenticationProvider;
+import com.practices.sergiodelamata.filmsFrontend.model.*;
 import com.practices.sergiodelamata.filmsFrontend.paginator.PageRender;
 import com.practices.sergiodelamata.filmsFrontend.service.IFilmService;
 import com.practices.sergiodelamata.filmsFrontend.service.IRoleService;
@@ -16,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -47,6 +46,8 @@ public class UserController {
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String currentEmail = authentication.getName();
             model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
         }
         model.addAttribute("title", "FilmingApp | Listado de usuarios");
         model.addAttribute("listUsers", list);
@@ -71,6 +72,8 @@ public class UserController {
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String currentEmail = authentication.getName();
             model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
         }
         model.addAttribute("title", "FilmingApp | Consultar datos del usuario");
         model.addAttribute("mode", mode);
@@ -99,6 +102,8 @@ public class UserController {
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String currentEmail = authentication.getName();
             model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
         }
         PageRender<User> pageRender = new PageRender<User>("/users/username?username=" + username + "&typeSearch=" + typeSearch, list);
         model.addAttribute("title", "FilmingApp | Listado de usuarios por nombre de usuario");
@@ -127,6 +132,8 @@ public class UserController {
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String currentEmail = authentication.getName();
             model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
         }
         PageRender<User> pageRender = new PageRender<User>("/users/email?email=" + email + "&typeSearch=" + typeSearch, list);
         model.addAttribute("title", "FilmingApp | Listado de usuarios por nombre de email");
@@ -138,9 +145,14 @@ public class UserController {
 
     @GetMapping("/new")
     public String newUser(Model model){
-        List<Role> roles = roleService.searchAll();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentEmail = authentication.getName();
+            model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
+        }
         model.addAttribute("title", "FilmingApp | Añadir un nuevo usuario");
-        model.addAttribute("allRoles", roles);
         User user = new User();
         model.addAttribute("user", user);
         return "users/formUserNew";
@@ -148,7 +160,7 @@ public class UserController {
 
     @GetMapping("/registry")
     public String registry(Model model){
-        model.addAttribute("title", "FilmingApp | Añadir un nuevo usuario");
+        model.addAttribute("title", "FilmingApp | Registrar usuario");
         User user = new User();
         model.addAttribute("user", user);
         return "users/formUserRegistry";
@@ -168,13 +180,10 @@ public class UserController {
     public String updateUser(Model model, @RequestBody User user, RedirectAttributes attributes)
     {
         User userAux = userService.searchUserById(user.getIdUser());
-        for(int i = 0; i < userAux.getCritics().size(); i++)
-        {
-            userAux.getCritics().get(i).setIdUser(user);
-        }
         user.setEnable(userAux.getEnable());
         user.setRoles(userAux.getRoles());
         userService.saveUser(user);
+
         model.addAttribute("title", "Usuario actualizado");
         attributes.addFlashAttribute("msg", "Los datos del usuario se han guardado correctamente.");
         return "users";
@@ -225,18 +234,17 @@ public class UserController {
 
 
     @PostMapping("/registry")
-    public String saveRegistry(Model model, User user, RedirectAttributes attributes)
+    public String saveRegistry(Model model, @RequestBody User user, RedirectAttributes attributes)
     {
         user.setEnable(0);
-        //Role role = roleService.searchRoleById(2); // User role
-        //user.setRoles(Arrays.asList(role));
         userService.saveUser(user);
+        model.addAttribute("title", "Registrar usuario");
         attributes.addFlashAttribute("msg", "Los datos del registro fueron guardados");
         return "redirect:/login";
     }
 
     @GetMapping("/edit/{idUser}")
-    public String editarUsuario(Model model, @PathVariable("idUser") Integer idUser,
+    public String editUser(Model model, @PathVariable("idUser") Integer idUser,
                                 @RequestParam(name="mode", defaultValue = "edit") String mode) {
         User user = userService.searchUserById(idUser);
         List<Critic> listCritics = user.getCritics();
@@ -251,15 +259,40 @@ public class UserController {
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String currentEmail = authentication.getName();
             model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
         }
         model.addAttribute("title", "FilmingApp | Editar datos del usuario");
         model.addAttribute("mode", mode);
         model.addAttribute("user", user);
-        List<Role> roles = roleService.searchAll();
-        model.addAttribute("allRoles", roles);
         model.addAttribute("films", listFilms);
         return "users/formUser";
     }
+
+    @GetMapping("/profile/{idUser}")
+    public String editProfile(Model model, @PathVariable("idUser") Integer idUser) {
+        User user = userService.searchUserById(idUser);
+        List<Critic> listCritics = user.getCritics();
+        List<Film> listFilms = new ArrayList<>();
+        for(int i = 0; i < listCritics.size(); i++)
+        {
+            Film film = filmService.searchFilmById(listCritics.get(i).getIdFilm());
+            listFilms.add(film);
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentEmail = authentication.getName();
+            model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
+        }
+        model.addAttribute("title", "FilmingApp | Editar datos del usuario");
+        model.addAttribute("user", user);
+        model.addAttribute("films", listFilms);
+        return "users/formUserProfile";
+    }
+
 
     @DeleteMapping("/delete/{idUser}")
     public String eliminarUsuario(Model model, @PathVariable("idUser") Integer idUser, RedirectAttributes attributes) {

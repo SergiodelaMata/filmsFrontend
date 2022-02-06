@@ -2,13 +2,18 @@ package com.practices.sergiodelamata.filmsFrontend.controller;
 
 import com.practices.sergiodelamata.filmsFrontend.model.Actor;
 import com.practices.sergiodelamata.filmsFrontend.model.Film;
+import com.practices.sergiodelamata.filmsFrontend.model.User;
 import com.practices.sergiodelamata.filmsFrontend.paginator.PageRender;
 import com.practices.sergiodelamata.filmsFrontend.service.IActorService;
 import com.practices.sergiodelamata.filmsFrontend.service.IFilmService;
+import com.practices.sergiodelamata.filmsFrontend.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +26,12 @@ import java.util.List;
 public class ActorController {
     @Autowired
     IFilmService filmService;
+
     @Autowired
     IActorService actorService;
+
+    @Autowired
+    IUserService userService;
 
     @GetMapping(value = {"/", ""})
     public String home(Model model, @RequestParam(name="page", defaultValue = "0") int page)
@@ -31,6 +40,13 @@ public class ActorController {
         Page<Actor> list = actorService.searchAll(pageable);
         PageRender<Actor> pageRender = new PageRender<Actor>("/actors", list);
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentEmail = authentication.getName();
+            model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
+        }
         model.addAttribute("title", "FilmingApp | Listado de actores");
         model.addAttribute("listActors", list);
         model.addAttribute("page", pageRender);
@@ -41,7 +57,14 @@ public class ActorController {
     public String newActor(Model model)
     {
         Actor actor = new Actor();
-        model.addAttribute("title", "Nuevo actor");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentEmail = authentication.getName();
+            model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
+        }
+        model.addAttribute("title", "FilmingApp | Nuevo actor");
         model.addAttribute("actor", actor);
         return "actors/formActorNew";
     }
@@ -51,6 +74,13 @@ public class ActorController {
                                   @RequestParam(name="mode", defaultValue = "request") String mode)
     {
         Actor actor = actorService.searchActorById(idActor);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentEmail = authentication.getName();
+            model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
+        }
         model.addAttribute("title", "FilmingApp | Consultar datos de actor");
         model.addAttribute("mode", mode);
         model.addAttribute("header", "Consultar datos de actor");
@@ -72,6 +102,13 @@ public class ActorController {
         else
         {
             list = actorService.searchActorsByName(name, pageable);
+        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentEmail = authentication.getName();
+            model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
         }
         PageRender<Actor> pageRender = new PageRender<Actor>("/actors/name?name=" + name + "&typeSearch=" + typeSearch, list);
         model.addAttribute("title", "FilmingApp | Listado de actores por nombre");
@@ -96,6 +133,13 @@ public class ActorController {
         {
             list = filmService.searchActorsByFilmsTitle(filmTitle, pageable);
         }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentEmail = authentication.getName();
+            model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
+        }
         PageRender<Actor> pageRender = new PageRender<Actor>("/actors/filmTitle?filmTitle=" + filmTitle + "&typeSearch=" + typeSearch, list);
         model.addAttribute("title", "FilmingApp | Listado de actores por título de película");
         model.addAttribute("listActors", list);
@@ -108,6 +152,13 @@ public class ActorController {
     public String insertActorToFilm(Model model, @PathVariable("idActor") Integer idActor){
         Actor actor = actorService.searchActorById(idActor);
         List<Film> listFilmNotMadeByActor = filmService.searchFilmsNotInActor(actor);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentEmail = authentication.getName();
+            model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
+        }
         model.addAttribute("title", "FilmingApp | Nueva película para el actor");
         model.addAttribute("idActor", idActor);
         model.addAttribute("listFilms", listFilmNotMadeByActor);
@@ -139,6 +190,13 @@ public class ActorController {
     public String editActor(Model model, @PathVariable("idActor") Integer idActor, @RequestParam(name="mode", defaultValue = "edit") String mode)
     {
         Actor actor = actorService.searchActorById(idActor);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentEmail = authentication.getName();
+            model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
+        }
         model.addAttribute("title", "FilmingApp | Editar datos del actor");
         model.addAttribute("mode", mode);
         model.addAttribute("header", "Editar datos de actor");

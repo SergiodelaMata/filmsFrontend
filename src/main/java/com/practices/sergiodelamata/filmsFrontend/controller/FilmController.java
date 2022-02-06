@@ -2,13 +2,18 @@ package com.practices.sergiodelamata.filmsFrontend.controller;
 
 import com.practices.sergiodelamata.filmsFrontend.model.Actor;
 import com.practices.sergiodelamata.filmsFrontend.model.Film;
+import com.practices.sergiodelamata.filmsFrontend.model.User;
 import com.practices.sergiodelamata.filmsFrontend.paginator.PageRender;
 import com.practices.sergiodelamata.filmsFrontend.service.IActorService;
 import com.practices.sergiodelamata.filmsFrontend.service.IFilmService;
+import com.practices.sergiodelamata.filmsFrontend.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +26,12 @@ import java.util.List;
 public class FilmController {
     @Autowired
     IFilmService filmService;
+
     @Autowired
     IActorService actorService;
+
+    @Autowired
+    IUserService userService;
 
     @GetMapping(value = {"/", ""})
     public String home(Model model, @RequestParam(name="page", defaultValue = "0") int page)
@@ -31,6 +40,13 @@ public class FilmController {
         Page<Film> list = filmService.searchAll(pageable);
         PageRender<Film> pageRender = new PageRender<Film>("/films", list);
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentEmail = authentication.getName();
+            model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
+        }
         model.addAttribute("title", "FilmingApp | Listado de películas");
         model.addAttribute("listFilms", list);
         model.addAttribute("page", pageRender);
@@ -41,6 +57,13 @@ public class FilmController {
     public String newFilm(Model model)
     {
         Film film = new Film();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentEmail = authentication.getName();
+            model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
+        }
         model.addAttribute("title", "FilmingApp | Nueva película");
         model.addAttribute("film", film);
         return "films/formFilmNew";
@@ -51,6 +74,13 @@ public class FilmController {
                                  @RequestParam(name="mode", defaultValue = "request") String mode)
     {
         Film film = filmService.searchFilmById(idFilm);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentEmail = authentication.getName();
+            model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
+        }
         model.addAttribute("title", "FilmingApp | Consultar datos de película");
         model.addAttribute("mode", mode);
         model.addAttribute("header", "Consultar datos de película");
@@ -73,6 +103,13 @@ public class FilmController {
         {
             list = filmService.searchFilmsByTitle(title, pageable);
         }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentEmail = authentication.getName();
+            model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
+        }
         PageRender<Film> pageRender = new PageRender<Film>("/films/title?title=" + title + "&typeSearch=" + typeSearch, list);
         model.addAttribute("title", "FilmingApp | Listado de películas por título");
         model.addAttribute("listFilms", list);
@@ -88,6 +125,13 @@ public class FilmController {
     {
         Pageable pageable = PageRequest.of(page, 5);
         Page<Film> list = filmService.searchFilmsByYear(yearInit, yearEnd, pageable);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentEmail = authentication.getName();
+            model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
+        }
         PageRender<Film> pageRender = new PageRender<Film>("/films/year?yearInit=" + yearInit + "&yearEnd=" + yearEnd + "&typeSearch=" + typeSearch, list);
         model.addAttribute("title", "FilmingApp | Listado de películas por año");
         model.addAttribute("listFilms", list);
@@ -110,6 +154,13 @@ public class FilmController {
         else
         {
             list = filmService.searchFilmsByCountry(country, pageable);
+        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentEmail = authentication.getName();
+            model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
         }
         PageRender<Film> pageRender = new PageRender<Film>("/films/country?country=" + country + "&typeSearch=" + typeSearch, list);
         model.addAttribute("title", "FilmingApp | Listado de películas por país");
@@ -134,6 +185,13 @@ public class FilmController {
         {
             list = filmService.searchFilmsByDirection(direction, pageable);
         }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentEmail = authentication.getName();
+            model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
+        }
         PageRender<Film> pageRender = new PageRender<Film>("/films/direction?direction=" + direction + "&typeSearch=" + typeSearch, list);
         model.addAttribute("title", "FilmingApp | Listado de películas por su dirección");
         model.addAttribute("listFilms", list);
@@ -156,6 +214,13 @@ public class FilmController {
         else
         {
             list = filmService.searchFilmsByGenres(genres, pageable);
+        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentEmail = authentication.getName();
+            model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
         }
         PageRender<Film> pageRender = new PageRender<Film>("/films/genres?genres=" + genres + "&typeSearch=" + typeSearch, list);
         model.addAttribute("title", "FilmingApp | Listado de películas por su género");
@@ -180,6 +245,13 @@ public class FilmController {
         {
             list = actorService.searchFilmsByActorsName(actorName, pageable);
         }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentEmail = authentication.getName();
+            model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
+        }
         PageRender<Film> pageRender = new PageRender<Film>("/films/actorName?actorName=" + actorName + "&typeSearch=" + typeSearch, list);
         model.addAttribute("title", "FilmingApp | Listado de películas por nombre de actor");
         model.addAttribute("listFilms", list);
@@ -192,6 +264,13 @@ public class FilmController {
     public String insertActorToFilm(Model model, @PathVariable("idFilm") Integer idFilm){
         Film film = filmService.searchFilmById(idFilm);
         List<Actor> listActorNotInFilm = actorService.searchActorsNotInFilm(film);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentEmail = authentication.getName();
+            model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
+        }
         model.addAttribute("title", "FilmingApp | Nuevo actor para el reparto");
         model.addAttribute("idFilm", idFilm);
         model.addAttribute("listActors", listActorNotInFilm);
@@ -223,6 +302,13 @@ public class FilmController {
     public String editFilm(Model model, @PathVariable("idFilm") Integer idFilm, @RequestParam(name="mode", defaultValue = "edit") String mode)
     {
         Film film = filmService.searchFilmById(idFilm);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentEmail = authentication.getName();
+            model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
+        }
         model.addAttribute("title", "FilmingApp | Editar datos de película");
         model.addAttribute("mode", mode);
         model.addAttribute("header", "Editar datos de película");

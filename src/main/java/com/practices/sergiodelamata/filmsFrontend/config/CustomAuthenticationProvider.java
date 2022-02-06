@@ -3,6 +3,7 @@ package com.practices.sergiodelamata.filmsFrontend.config;
 import com.practices.sergiodelamata.filmsFrontend.model.Role;
 import com.practices.sergiodelamata.filmsFrontend.model.UserLogin;
 import com.practices.sergiodelamata.filmsFrontend.service.IUserService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
