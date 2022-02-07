@@ -106,6 +106,7 @@ public class CriticController {
                                  @RequestParam(name="mode", defaultValue = "request") String mode)
     {
         Critic critic = criticService.searchCriticById(idCritic);
+        Film film = filmService.searchFilmById(critic.getIdFilm());
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
@@ -117,6 +118,30 @@ public class CriticController {
         model.addAttribute("title", "FilmingApp | Consultar datos de la crítica");
         model.addAttribute("mode", mode);
         model.addAttribute("header", "Consultar datos de crítica");
+        model.addAttribute("critic", critic);
+        model.addAttribute("film", film);
+        return "critics/formCritic";
+    }
+
+    @GetMapping("/edit/{idCritic}")
+    public String editActor(Model model, @PathVariable("idCritic") Integer idCritic,
+                            @RequestParam(name="mode", defaultValue = "edit") String mode)
+    {
+        Critic critic = criticService.searchCriticById(idCritic);
+        Film film = filmService.searchFilmById(critic.getIdFilm());
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentEmail = authentication.getName();
+            model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
+        }
+        model.addAttribute("title", "FilmingApp | Editar datos de la crítica");
+        model.addAttribute("mode", mode);
+        model.addAttribute("header", "Editar datos de crítica");
+        model.addAttribute("critic", critic);
+        model.addAttribute("film", film);
         return "critics/formCritic";
     }
 
@@ -228,7 +253,16 @@ public class CriticController {
     @PutMapping("/save")
     public String updateCritic(Model model, @RequestBody Critic critic, RedirectAttributes attributes)
     {
-        criticService.saveCritic(critic);
+        Critic criticAux = criticService.searchCriticById(critic.getIdCritic());
+        critic.setDateCritic(criticAux.getDateCritic());
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentEmail = authentication.getName();
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            critic.setUser(userLogged);
+            criticService.saveCritic(critic);
+        }
 
         model.addAttribute("title", "Crítica actualizado");
         attributes.addFlashAttribute("msg", "Los datos de la crítica se han guardado correctamente.");

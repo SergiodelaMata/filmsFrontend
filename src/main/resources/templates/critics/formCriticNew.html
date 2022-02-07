@@ -33,7 +33,7 @@
                 </div>
                 <div class="row form-inline" style="margin-top:10px;">
                     <label for="valoration" class="card-title font-weight-bold" style="margin-right:5px;">Valoración(*):</label>
-                    <input id="valoration" name="valoration" type="text" value="" required>
+                    <textarea id="valoration" name="valoration" type="text" cols="400" rows="5" value="" required></textarea>
                 </div>
                 <div sec:authorize="isAuthenticated()" class="d-flex justify-content-center" style="margin-top:10px;">
                     <button id="sendForm" type="submit" class="btn btn-primary">
