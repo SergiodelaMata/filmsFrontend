@@ -4,6 +4,7 @@ var criticsButton = document.getElementById("criticsButton");
 var requestCriticsButtons;
 var editCriticsButtons;
 var deleteCriticsButtons;
+var checkActorsDivs;
 
 window.addEventListener("DOMContentLoaded", function() {
     formFilm = document.getElementById("form-film");
@@ -16,6 +17,12 @@ window.addEventListener("DOMContentLoaded", function() {
             window.location.href = "/critics/new/" + idFilm;
         });
     }
+
+    checkActorsDivs = document.getElementsByClassName("check-actor");
+    for (var i = 0; i < checkActorsDivs.length; i++) {
+        checkActorsDivs[i].addEventListener("click", checkActorDiv, false);
+    }
+
     requestCriticsButtons = document.getElementsByClassName("request-critic");
     for (var i = 0; i < requestCriticsButtons.length; i++) {
         requestCriticsButtons[i].addEventListener("click", detailCritic, false);
@@ -41,6 +48,11 @@ window.addEventListener("DOMContentLoaded", function() {
     });
 
 }, false);
+
+const checkActorDiv = async function(){
+    const idActor = this.getAttribute("idActor");
+    window.location.href = "/actors/" + idActor + "?mode=request";
+}
 
 const detailCritic = async function(){
     const idCritic = this.getAttribute("idcritic");

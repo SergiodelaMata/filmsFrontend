@@ -3,10 +3,17 @@ var valueRadioButton = getValueRadioButton();
 var requestActorsButtons;
 var editActorsButtons;
 var deleteActorsButtons;
+var checkActorsDivs;
 
 window.addEventListener("DOMContentLoaded", function() {
     valueRadioButton = getValueRadioButton();
     selectedOption();
+
+    checkActorsDivs = document.getElementsByClassName("check-actor");
+    for (var i = 0; i < checkActorsDivs.length; i++) {
+        checkActorsDivs[i].addEventListener("click", checkActorDiv, false);
+    }
+
     requestActorsButtons = document.getElementsByClassName("request-actor");
     for (var i = 0; i < requestActorsButtons.length; i++) {
         requestActorsButtons[i].addEventListener("click", detailActor, false);
@@ -20,6 +27,11 @@ window.addEventListener("DOMContentLoaded", function() {
         deleteActorsButtons[i].addEventListener("click", deleteActor, false);
     }
 }, false);
+
+const checkActorDiv = async function(){
+    const idActor = this.getAttribute("idActor");
+    window.location.href = "/actors/" + idActor + "?mode=request";
+}
 
 const detailActor = async function(){
     const idActor = this.getAttribute("idActor");

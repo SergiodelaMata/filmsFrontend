@@ -3,10 +3,17 @@ var valueRadioButton = getValueRadioButton();
 var requestFilmsButtons;
 var editFilmsButtons;
 var deleteFilmsButtons;
+var checkFilmsDivs;
 
 window.addEventListener("DOMContentLoaded", function() {
     valueRadioButton = getValueRadioButton();
     selectedOption();
+
+    checkFilmsDivs = document.getElementsByClassName("check-film");
+    for (var i = 0; i < checkFilmsDivs.length; i++) {
+        checkFilmsDivs[i].addEventListener("click", checkFilmDiv, false);
+    }
+
     requestFilmsButtons = document.getElementsByClassName("request-film");
     for (var i = 0; i < requestFilmsButtons.length; i++) {
         requestFilmsButtons[i].addEventListener("click", detailFilm, false);
@@ -20,6 +27,11 @@ window.addEventListener("DOMContentLoaded", function() {
         deleteFilmsButtons[i].addEventListener("click", deleteFilm, false);
     }
 }, false);
+
+const checkFilmDiv = async function(){
+    const idFilm = this.getAttribute("idfilm");
+    window.location.href = "/films/" + idFilm + "?mode=request";
+}
 
 const detailFilm = async function(){
     const idFilm = this.getAttribute("idfilm");

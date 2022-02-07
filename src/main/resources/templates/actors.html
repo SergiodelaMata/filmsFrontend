@@ -61,9 +61,10 @@
                 </div>
                 <div class="card-body">
                     <div class="row" >
-                        <div sec:authorize="isAnonymous()||hasAuthority('user')" class="d-flex d-inline justify-content-center container card col-sm-2" th:each="actor : ${listActors}"  style="margin-top:10px; margin-bottom: 10px;">
+                        <div sec:authorize="isAnonymous()||hasAuthority('user')" class="check-actor d-flex d-inline justify-content-center container card col-sm-2" th:each="actor : ${listActors}"  style="margin-top:10px; margin-bottom: 10px;" th:idActor="${actor.getIdActor()}">
                             <img th:src="${actor.getImage()}" style="margin-top:10px; margin-bottom: 10px;">
                             <div class="card-body">
+                                <input class="none" th:value="${actor.getIdActor()}">
                                 <h5 th:text="${actor.getName()}"></h5>
                             </div>
                         </div>

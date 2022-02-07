@@ -102,7 +102,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="d-flex d-inline justify-content-center container card col-sm-2" th:each="actor : ${film.getActors()}"  style="margin-top:10px; margin-bottom: 10px;">
+                    <div class="check-actor d-flex d-inline justify-content-center container card col-sm-2" th:each="actor : ${film.getActors()}"  style="margin-top:10px; margin-bottom: 10px;" th:idActor="${actor.getIdActor()}">
                         <img th:src="${actor.getImage()}" style="margin-top:10px; margin-bottom: 10px;">
                         <div class="card-body">
                             <h5 th:text="${actor.getName()}"></h5>
