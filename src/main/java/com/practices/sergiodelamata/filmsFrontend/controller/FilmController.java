@@ -80,6 +80,16 @@ public class FilmController {
     {
         Film film = filmService.searchFilmById(idFilm);
         List<Critic> listCritics = criticService.searchCriticByIdFilm(idFilm);
+
+        float avgMark = 0;
+        //Se obtiene la media de las notas puestas por los usuarios
+        for(int i = 0; i < listCritics.size(); i++)
+        {
+            avgMark += listCritics.get(i).getMark();
+        }
+        avgMark /= listCritics.size();
+        model.addAttribute("averageMark", avgMark);
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String currentEmail = authentication.getName();
@@ -310,6 +320,16 @@ public class FilmController {
     {
         Film film = filmService.searchFilmById(idFilm);
         List<Critic> listCritics = criticService.searchCriticByIdFilm(idFilm);
+
+        float avgMark = 0;
+        //Se obtiene la media de las notas puestas por los usuarios
+        for(int i = 0; i < listCritics.size(); i++)
+        {
+            avgMark += listCritics.get(i).getMark();
+        }
+        avgMark /= listCritics.size();
+        model.addAttribute("averageMark", avgMark);
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String currentEmail = authentication.getName();
