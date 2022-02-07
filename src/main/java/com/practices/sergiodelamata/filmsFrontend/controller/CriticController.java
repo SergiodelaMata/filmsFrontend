@@ -1,5 +1,6 @@
 package com.practices.sergiodelamata.filmsFrontend.controller;
 
+import com.practices.sergiodelamata.filmsFrontend.model.Actor;
 import com.practices.sergiodelamata.filmsFrontend.model.Critic;
 import com.practices.sergiodelamata.filmsFrontend.model.Film;
 import com.practices.sergiodelamata.filmsFrontend.model.User;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -59,6 +61,44 @@ public class CriticController {
         model.addAttribute("listCritics", list);
         model.addAttribute("page", pageRender);
         return "critics";
+    }
+
+    @GetMapping("/new")
+    public String newCritic(Model model)
+    {
+        Critic critic = new Critic();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentEmail = authentication.getName();
+            model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
+            List<Film> listFilms = filmService.searchFilmsNotWithCriticFromUser(userLogged);
+            model.addAttribute("listFilms", listFilms);
+        }
+        model.addAttribute("title", "FilmingApp | Nueva crítica");
+        model.addAttribute("critic", critic);
+        return "critics/formCriticNew";
+    }
+
+    @GetMapping("/new/{idFilm}")
+    public String newCriticByFilm(Model model, @PathVariable("idFilm") Integer idFilm)
+    {
+        Critic critic = new Critic();
+        Film film = filmService.searchFilmById(idFilm);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentEmail = authentication.getName();
+            model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
+            List<Film> listFilms = filmService.searchFilmsNotWithCriticFromUser(userLogged);
+            model.addAttribute("listFilms", listFilms);
+        }
+        model.addAttribute("title", "FilmingApp | Nueva crítica");
+        model.addAttribute("critic", critic);
+        model.addAttribute("film", film);
+        return "critics/formCriticNewFilm";
     }
 
     @GetMapping("/{idCritic}")
@@ -155,6 +195,30 @@ public class CriticController {
     @PostMapping("/save")
     public String saveCritic(Model model, @RequestBody Critic critic, RedirectAttributes attributes)
     {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentEmail = authentication.getName();
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            critic.setUser(userLogged);
+        }
+        critic.setDateCritic(new Date());
+        criticService.saveCritic(critic);
+        model.addAttribute("title", "Nueva crítica");
+        attributes.addFlashAttribute("msg", "Los datos de la crítica se han guardado correctamente.");
+        return "critics";
+    }
+
+    @PostMapping("/save/{idFilm}")
+    public String saveCritic(Model model, @PathVariable("idFilm") Integer idFilm, @RequestBody Critic critic, RedirectAttributes attributes)
+    {
+        critic.setIdFilm(idFilm);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentEmail = authentication.getName();
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            critic.setUser(userLogged);
+        }
+        critic.setDateCritic(new Date());
         criticService.saveCritic(critic);
         model.addAttribute("title", "Nueva crítica");
         attributes.addFlashAttribute("msg", "Los datos de la crítica se han guardado correctamente.");

@@ -1,7 +1,9 @@
 package com.practices.sergiodelamata.filmsFrontend.service;
 
 import com.practices.sergiodelamata.filmsFrontend.model.Actor;
+import com.practices.sergiodelamata.filmsFrontend.model.Critic;
 import com.practices.sergiodelamata.filmsFrontend.model.Film;
+import com.practices.sergiodelamata.filmsFrontend.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class FilmServiceImpl implements IFilmService{
@@ -178,5 +181,39 @@ public class FilmServiceImpl implements IFilmService{
         }
         return listFilmsAux;
     }
+
+    @Override
+    public List<Film> searchFilmsNotWithCriticFromUser(User user)
+    {
+        Film[] films = template.getForObject(urlFilms, Film[].class);
+        ArrayList<Film> completeListFilm = new ArrayList<Film>(Arrays.asList(films));
+        List<Critic> listCritics = user.getCritics();
+        List<Film> listFilmAux = new ArrayList<>();
+
+        for(int i = 0; i < completeListFilm.size(); i++)
+        {
+            for(int j = 0; j < listCritics.size(); j++)
+            {
+                if(Objects.equals(completeListFilm.get(i).getIdFilm(), listCritics.get(j).getIdFilm()))
+                {
+                    listFilmAux.add(completeListFilm.get(i));
+                }
+            }
+        }
+
+        for(int i = completeListFilm.size()-1; i >= 0; i--)
+        {
+            for(int j = 0; j < listFilmAux.size(); j++)
+            {
+                if(Objects.equals(completeListFilm.get(i).getIdFilm(), listFilmAux.get(j).getIdFilm()))
+                {
+                    completeListFilm.remove(i);
+                }
+            }
+        }
+
+        return completeListFilm;
+    }
+
 
 }

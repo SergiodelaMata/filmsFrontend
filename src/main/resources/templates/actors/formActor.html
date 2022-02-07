@@ -20,7 +20,7 @@
         <nav th:replace="navbar::navbar"></nav>
         <h1 class="text-center" th:text="${header}"></h1>
         <hr>
-        <div class="container card">
+        <div class="container card justify-content-center">
             <div class="d-flex justify-content-center" style="margin-top:10px;">
                 <div class="container card">
                     <div class="col-sm-1"></div>
@@ -31,7 +31,7 @@
                 </div>
                 <div class="container card">
                     <form id="form-actor" style="margin: 10px;">
-                        <input th:id="${actor.getIdActor()}" name="idActor" style="display: none;" th:value="${actor.getIdActor()}" readonly required>
+                        <input id="idActor" name="idActor" style="display: none;" th:value="${actor.getIdActor()}" readonly required>
                         <div class="row form-inline" style="margin-top:10px;">
                             <label for="name" class="card-title font-weight-bold" style="margin-right:5px;"> Nombre(*):</label>
                             <input id="name" name="name" type="text" th:value="${actor.getName()}" th:readonly="${mode == 'request'}" th:required="${mode == 'edit'}">

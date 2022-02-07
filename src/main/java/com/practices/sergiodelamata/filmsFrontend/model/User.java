@@ -96,4 +96,16 @@ public class User {
     }
 
 
+    public boolean hasCriticFilm(Integer idFilm)
+    {
+        boolean verify = false;
+        for(int i = 0; i < this.getCritics().size(); i++)
+        {
+            if(Objects.equals(this.getCritics().get(i).getIdFilm(), idFilm))
+            {
+                verify = true;
+            }
+        }
+        return verify;
+    }
 }

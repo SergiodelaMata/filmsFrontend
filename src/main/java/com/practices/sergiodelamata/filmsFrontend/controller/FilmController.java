@@ -1,10 +1,12 @@
 package com.practices.sergiodelamata.filmsFrontend.controller;
 
 import com.practices.sergiodelamata.filmsFrontend.model.Actor;
+import com.practices.sergiodelamata.filmsFrontend.model.Critic;
 import com.practices.sergiodelamata.filmsFrontend.model.Film;
 import com.practices.sergiodelamata.filmsFrontend.model.User;
 import com.practices.sergiodelamata.filmsFrontend.paginator.PageRender;
 import com.practices.sergiodelamata.filmsFrontend.service.IActorService;
+import com.practices.sergiodelamata.filmsFrontend.service.ICriticService;
 import com.practices.sergiodelamata.filmsFrontend.service.IFilmService;
 import com.practices.sergiodelamata.filmsFrontend.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,9 @@ public class FilmController {
 
     @Autowired
     IUserService userService;
+
+    @Autowired
+    ICriticService criticService;
 
     @GetMapping(value = {"/", ""})
     public String home(Model model, @RequestParam(name="page", defaultValue = "0") int page)
@@ -74,6 +79,7 @@ public class FilmController {
                                  @RequestParam(name="mode", defaultValue = "request") String mode)
     {
         Film film = filmService.searchFilmById(idFilm);
+        List<Critic> listCritics = criticService.searchCriticByIdFilm(idFilm);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String currentEmail = authentication.getName();
@@ -85,6 +91,7 @@ public class FilmController {
         model.addAttribute("mode", mode);
         model.addAttribute("header", "Consultar datos de película");
         model.addAttribute("film", film);
+        model.addAttribute("listCritics", listCritics);
         return "films/formFilm";
     }
 
@@ -302,6 +309,7 @@ public class FilmController {
     public String editFilm(Model model, @PathVariable("idFilm") Integer idFilm, @RequestParam(name="mode", defaultValue = "edit") String mode)
     {
         Film film = filmService.searchFilmById(idFilm);
+        List<Critic> listCritics = criticService.searchCriticByIdFilm(idFilm);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String currentEmail = authentication.getName();
@@ -313,6 +321,7 @@ public class FilmController {
         model.addAttribute("mode", mode);
         model.addAttribute("header", "Editar datos de película");
         model.addAttribute("film", film);
+        model.addAttribute("listCritics", listCritics);
         return "films/formFilm";
     }
 

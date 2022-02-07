@@ -46,7 +46,7 @@ public class CriticServiceImpl implements ICriticService{
 
     @Override
     public List<Critic> searchCriticByIdFilm(Integer idFilm){
-        Critic[] critics = template.getForObject(url + "/idFilm/" + idFilm, Critic[].class);
+        Critic[] critics = template.getForObject(url + "/film/" + idFilm, Critic[].class);
         List<Critic> listCritics = Arrays.asList(critics);
         return listCritics;
     }
@@ -71,35 +71,7 @@ public class CriticServiceImpl implements ICriticService{
         if (critic.getIdCritic() != null && critic.getIdCritic() > 0) {
             template.put(url, critic);
         } else {
-            User user = userService.searchUserById(critic.getUser().getIdUser());
-            Film film = filmService.searchFilmById(critic.getIdFilm());
-            //Se comprueba si existe el usuario
-            if(user != null) {
-                //Se comprueba si existe la película
-                if (film != null) {
-                    boolean verify = false;
-                    int position = 0;
-                    List<Critic> listCritics = user.getCritics();
-                    //Se comprueba si el usuario ya realizó una crítica a dicha película o no entre el listado de sus comentarios
-                    for (int i = 0; i < listCritics.size(); i++) {
-                        //Se comprueba si el usuario ya realizó una crítica a dicha película o no
-                        if (Objects.equals(listCritics.get(i).getUser().getIdUser(), critic.getUser().getIdUser())) {
-                            verify = true;
-                            position = i;
-                        }
-                    }
-                    //En el caso de que no se haya encontrado ningún comentario del usuario para esa película, se guarda el comentario
-                    if (!verify) {
-                        //Insertamos un nuevo comentario
-                        template.postForObject(url, critic, String.class);
-                    //En caso contrario, se actualiza el comentario
-                    } else {
-                        //Actualizamos el comentario volviéndolo a poner su identificador antes de guardar los cambios
-                        critic.setIdCritic(listCritics.get(position).getIdCritic());
-                        template.put(url, critic);
-                    }
-                }
-            }
+            template.postForObject(url, critic, String.class);
         }
     }
 

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title th:title="${title}"></title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/global.css}" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script th:src="@{/js/profile.js}"></script>
+    <script th:src="@{/js/httpRequests.js}"></script>
+    <script th:src="@{/js/newCriticFilm.js}"></script>
+    <script th:src="@{/js/formTools.js}"></script>
+</head>
+<body>
+    <div class="container" style="margin-top: 20px; margin-bottom: 20px;">
+        <nav th:replace="navbar::navbar"></nav>
+        <h1 class="text-center">Nuevo usuario</h1>
+        <hr>
+        <div class="container card">
+            <form id="form-critic" style="margin: 10px;">
+                <input id="idCritic" name="idCritic" style="display: none;" value="0" readonly required>
+                <div class="row form-inline" style="margin-top:10px;">
+                    <input id="idFilm" name="idFilm" style="display: none;" th:value="${film.getIdFilm()}" readonly required>
+                    <label for="title" class="card-title font-weight-bold" style="margin-right:5px;"> Título de la película(*):</label>
+                    <input id="title" name="title" type="text" th:value="${film.getTitle()}" readonly required>
+                </div>
+                <div class="row form-inline" style="margin-top:10px;">
+                    <label for="mark" class="card-title font-weight-bold" style="margin-right:5px;">Nota(*):</label>
+                    <input id="mark" name="mark" type="number" min="0" max="10" value="" required>
+                </div>
+                <div class="row form-inline" style="margin-top:10px;">
+                    <label for="valoration" class="card-title font-weight-bold" style="margin-right:5px;">Valoración(*):</label>
+                    <input id="valoration" name="valoration" type="text" value="" required>
+                </div>
+                <div sec:authorize="isAuthenticated()" class="d-flex justify-content-center" style="margin-top:10px;">
+                    <button id="sendForm" type="submit" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save" viewBox="0 0 16 16">
+                            <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"/>
+                        </svg>
+                        Insertar crítica
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

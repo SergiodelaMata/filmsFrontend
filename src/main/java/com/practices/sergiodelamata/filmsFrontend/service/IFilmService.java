@@ -2,6 +2,7 @@ package com.practices.sergiodelamata.filmsFrontend.service;
 
 import com.practices.sergiodelamata.filmsFrontend.model.Actor;
 import com.practices.sergiodelamata.filmsFrontend.model.Film;
+import com.practices.sergiodelamata.filmsFrontend.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -37,4 +38,6 @@ public interface IFilmService {
     void removeActor(Integer idFilm, Integer idActor);
 
     List<Film> searchFilmsNotInActor(Actor actor);
+
+    List<Film> searchFilmsNotWithCriticFromUser(User user);
 }
