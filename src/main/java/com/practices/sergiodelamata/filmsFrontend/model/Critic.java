@@ -13,17 +13,17 @@ import java.util.Objects;
 public class Critic {
     private Integer idCritic;
     private Integer idFilm;
-    private User idUser;
+    private User user;
     private String valoration;
     private Integer mark;
     private Date dateCritic;
 
     public Critic() {}
 
-    public Critic(Integer idCritic, Integer idFilm, User idUser, String valoration, Integer mark, Date dateCritic) {
+    public Critic(Integer idCritic, Integer idFilm, User user, String valoration, Integer mark, Date dateCritic) {
         this.idCritic = idCritic;
         this.idFilm = idFilm;
-        this.idUser = idUser;
+        this.user = user;
         this.valoration = valoration;
         this.mark = mark;
         this.dateCritic = dateCritic;
@@ -53,12 +53,12 @@ public class Critic {
         this.valoration = valoration;
     }
 
-    public User getIdUser() {
-        return idUser;
+    public User getUser() {
+        return user;
     }
 
-    public void setIdUser(User idUser) {
-        this.idUser = idUser;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Integer getIdFilm() {
@@ -107,6 +107,4 @@ public class Critic {
         Page<Critic> page = new PageImpl<>(list, PageRequest.of(currentPage, pageSize), listCritics.size());
         return page;
     }
-
-
 }

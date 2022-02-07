@@ -135,4 +135,16 @@ public class Film {
         Page<Film> page = new PageImpl<>(list, PageRequest.of(currentPage, pageSize), listFilms.size());
         return page;
     }
+
+    public Film getFilmFromListByIdFilm(List<Film> listFilms, Integer idFilm){
+        Film film = null;
+        for(int i = 0; i < listFilms.size(); i++)
+        {
+            if(listFilms.get(i).getIdFilm() == idFilm)
+            {
+                film = listFilms.get(i);
+            }
+        }
+        return film;
+    }
 }

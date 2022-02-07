@@ -56,7 +56,7 @@ public class CriticServiceImpl implements ICriticService{
         List<Critic> listCritics = new ArrayList<>();
         for(int i = 0; i < filmList.size(); i++)
         {
-            Critic[] critics = template.getForObject(url + "/idFilm/" + filmList.get(i).getIdFilm(), Critic[].class);
+            Critic[] critics = template.getForObject(url + "/film/" + filmList.get(i).getIdFilm(), Critic[].class);
             List<Critic> listCriticsAux = Arrays.asList(critics);
             listCritics.addAll(listCriticsAux);
         }
@@ -71,7 +71,7 @@ public class CriticServiceImpl implements ICriticService{
         if (critic.getIdCritic() != null && critic.getIdCritic() > 0) {
             template.put(url, critic);
         } else {
-            User user = userService.searchUserById(critic.getIdUser().getIdUser());
+            User user = userService.searchUserById(critic.getUser().getIdUser());
             Film film = filmService.searchFilmById(critic.getIdFilm());
             //Se comprueba si existe el usuario
             if(user != null) {
@@ -83,7 +83,7 @@ public class CriticServiceImpl implements ICriticService{
                     //Se comprueba si el usuario ya realizó una crítica a dicha película o no entre el listado de sus comentarios
                     for (int i = 0; i < listCritics.size(); i++) {
                         //Se comprueba si el usuario ya realizó una crítica a dicha película o no
-                        if (Objects.equals(listCritics.get(i).getIdUser().getIdUser(), critic.getIdUser().getIdUser())) {
+                        if (Objects.equals(listCritics.get(i).getUser().getIdUser(), critic.getUser().getIdUser())) {
                             verify = true;
                             position = i;
                         }

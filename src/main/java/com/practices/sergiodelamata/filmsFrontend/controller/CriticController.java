@@ -42,6 +42,7 @@ public class CriticController {
     public String home(Model model, @RequestParam(name="page", defaultValue = "0") int page)
     {
         Pageable pageable = PageRequest.of(page, 5);
+        List<Film> listFilms = filmService.searchAll();
         Page<Critic> list = criticService.searchAll(pageable);
         PageRender<Critic> pageRender = new PageRender<Critic>("/critics", list);
 
@@ -53,6 +54,8 @@ public class CriticController {
             model.addAttribute("userLogged", userLogged);
         }
         model.addAttribute("title", "FilmingApp | Listado de críticas");
+        model.addAttribute("film", new Film());
+        model.addAttribute("listFilms", listFilms);
         model.addAttribute("listCritics", list);
         model.addAttribute("page", pageRender);
         return "critics";
@@ -74,25 +77,62 @@ public class CriticController {
         model.addAttribute("title", "FilmingApp | Consultar datos de la crítica");
         model.addAttribute("mode", mode);
         model.addAttribute("header", "Consultar datos de crítica");
-        return "users/formUser";
+        return "critics/formCritic";
     }
 
-    @GetMapping("/title")
-    public String searchUserByUsername(Model model, @RequestParam(name="page", defaultValue = "0") int page,
-                                       @RequestParam("title") String title,
-                                       @RequestParam(name="typeSearch", defaultValue = "nameFilm") String typeSearch)
+    @GetMapping("/ownCritics")
+    public String searchCriticOwnUser(Model model, @RequestParam(name="page", defaultValue = "0") int page,
+                                       @RequestParam(name="typeSearch", defaultValue = "ownCritics") String typeSearch)
     {
         Pageable pageable = PageRequest.of(page, 5);
         Page<Critic> list;
+        List<Film> listFilms = filmService.searchAll();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentEmail = authentication.getName();
+            model.addAttribute("email", currentEmail);
+            User userLogged = userService.searchUserByEmailUnique(currentEmail);
+            model.addAttribute("userLogged", userLogged);
+            List<Critic> listCriticsAux = userLogged.getCritics();
+            List<Critic> listCritics = new ArrayList<>();
+            //Se buscan los datos del usuario que ha realizado la crítica ya que se encuentra vacío
+            for(int i = 0; i < listCriticsAux.size(); i++)
+            {
+                Critic criticAux = criticService.searchCriticById(listCriticsAux.get(i).getIdCritic());
+                listCritics.add(criticAux);
+            }
+            Critic critic = new Critic();
+            list = critic.getPageCritic(listCritics, pageable);
+            PageRender<Critic> pageRender = new PageRender<Critic>("/critics/ownCritics?typeSearch=" + typeSearch, list);
+            model.addAttribute("listCritics", list);
+            model.addAttribute("page", pageRender);
+        }
+
+        model.addAttribute("title", "FilmingApp | Listado de críticas por críticas del usuario");
+        model.addAttribute("film", new Film());
+        model.addAttribute("listFilms", listFilms);
+        model.addAttribute("typeSearch", typeSearch);
+        return "critics/listCritics";
+    }
+
+    @GetMapping("/title")
+    public String searchCriticByTitleFilm(Model model, @RequestParam(name="page", defaultValue = "0") int page,
+                                       @RequestParam("title") String title,
+                                       @RequestParam(name="typeSearch", defaultValue = "title") String typeSearch)
+    {
+        Pageable pageable = PageRequest.of(page, 5);
+        Page<Critic> list;
+        List<Film> listFilms;
         if(title.equals(""))
         {
             list = criticService.searchAll(pageable);
+            listFilms = filmService.searchAll();
         }
         else
         {
             //Primero se buscan el listado de películas que contengan el título indicado y luego se cogen sus identificadores
             //para obtener la lista página de los comentarios de cada una de esas películas
-            List<Film> listFilms = filmService.searchFilmsByTitle(title);
+            listFilms = filmService.searchFilmsByTitle(title);
             list = criticService.searchCriticByIdFilms(listFilms, pageable);
         }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -104,10 +144,12 @@ public class CriticController {
         }
         PageRender<Critic> pageRender = new PageRender<Critic>("/critics/title?title=" + title + "&typeSearch=" + typeSearch, list);
         model.addAttribute("title", "FilmingApp | Listado de críticas por títulos de película");
+        model.addAttribute("film", new Film());
+        model.addAttribute("listFilms", listFilms);
         model.addAttribute("listCritics", list);
         model.addAttribute("page", pageRender);
         model.addAttribute("typeSearch", typeSearch);
-        return "users/listUsers";
+        return "critics/listCritics";
     }
 
     @PostMapping("/save")
@@ -126,7 +168,7 @@ public class CriticController {
 
         model.addAttribute("title", "Crítica actualizado");
         attributes.addFlashAttribute("msg", "Los datos de la crítica se han guardado correctamente.");
-        return "users";
+        return "critics";
     }
 
     @DeleteMapping("/delete/{idCritic}")

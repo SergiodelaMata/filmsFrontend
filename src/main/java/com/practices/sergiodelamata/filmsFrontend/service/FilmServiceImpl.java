@@ -20,6 +20,14 @@ public class FilmServiceImpl implements IFilmService{
     String urlFilms = "http://localhost:8090/api/films-actors/films";
 
     @Override
+    public List<Film> searchAll()
+    {
+        Film[] films = template.getForObject(urlFilms, Film[].class);
+        List<Film> listFilms = Arrays.asList(films);
+        return listFilms;
+    }
+
+    @Override
     public Page<Film> searchAll(Pageable pageable) {
         Film[] films = template.getForObject(urlFilms, Film[].class);
         Film film = new Film();

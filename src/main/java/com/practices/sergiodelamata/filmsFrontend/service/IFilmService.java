@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface IFilmService {
+    List<Film> searchAll();
+
     Page<Film> searchAll(Pageable pageable);
 
     Film searchFilmById(Integer idFilm);
