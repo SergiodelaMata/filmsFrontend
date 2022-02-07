@@ -10,7 +10,6 @@ window.addEventListener("DOMContentLoaded", function() {
         {
             const formData = formSerializer(event);
             await(postRequest("/users/save",formData));
-            //const response = await(postRequest("/users/save",formData));
             alert("Los datos del usuario se han guardado correctamente.");
             window.location.href = "/users";
         }

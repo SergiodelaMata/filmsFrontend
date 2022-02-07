@@ -13,7 +13,6 @@ const deleteRelation = async function () {
     var actionConfirmed = confirm("¿Estás seguro de que desea eliminar a esta película del actor?");
     if(actionConfirmed) {
         await deleteRequest("/actors/delete/film/" + idActor + "/" + idFilm);
-        //const response = await deleteRequest("/actors/delete/film/" + idActor + "/" + idFilm);
         alert("Se ha eliminado la película del actor");
         location.reload();
     }

@@ -36,7 +36,6 @@ const deleteCritic = async function () {
     var actionConfirmed = confirm("¿Estás seguro de que desea eliminar esta crítica?");
     if(actionConfirmed) {
         await deleteRequest("/critics/delete/" + idCritic);
-        //const response = await deleteRequest("/critics/delete/" + idCritic);
         alert("La crítica ha sido eliminada");
         location.reload();
     }

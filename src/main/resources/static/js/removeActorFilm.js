@@ -13,7 +13,6 @@ const deleteRelation = async function () {
     var actionConfirmed = confirm("¿Estás seguro de que desea eliminar a este actor del reparto de esta película?");
     if(actionConfirmed) {
         await deleteRequest("/films/delete/actor/" + idFilm + "/" + idActor);
-        //const response = await deleteRequest("/films/delete/actor/" + idFilm + "/" + idActor);
         alert("Se ha eliminado el actor del reparto de la película");
         location.reload();
     }

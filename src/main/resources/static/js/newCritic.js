@@ -9,7 +9,6 @@ window.addEventListener("DOMContentLoaded", function() {
         event.preventDefault();
         const formData = formSerializer(event);
         await(postRequest("/critics/save/" + value[0],formData));
-        //const response = await(postRequest("/critics/save",formData));
         alert("Los datos de la crítica se han guardado correctamente.");
         window.location.href = "/critics";
     });

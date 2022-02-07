@@ -13,7 +13,6 @@ window.addEventListener("DOMContentLoaded", function() {
         event.preventDefault();
         const formData = formSerializer(event);
         await (putRequest("/actors/save", formData));
-        //const response = await(putRequest("/films/save",formData));
         alert("Los datos del actor se han guardado correctamente.");
         window.location.href = "/actors";
     });

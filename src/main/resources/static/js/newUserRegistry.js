@@ -10,7 +10,6 @@ window.addEventListener("DOMContentLoaded", function() {
         {
             const formData = formSerializer(event);
             await(postRequest("/users/registry",formData));
-            //const response = await(postRequest("/users/registry",formData));
             alert("El usuario ha sido registrado.");
             window.location.href = "/";
         }

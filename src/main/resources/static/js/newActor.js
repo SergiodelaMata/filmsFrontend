@@ -6,7 +6,6 @@ window.addEventListener("DOMContentLoaded", function() {
         event.preventDefault();
         const formData = formSerializer(event);
         await(postRequest("/actors/save",formData));
-        //const response = await(postRequest("/actors/save",formData));
         alert("Los datos del actor se han guardado correctamente.");
         window.location.href = "/actors";
     });

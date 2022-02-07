@@ -42,7 +42,6 @@ window.addEventListener("DOMContentLoaded", function() {
         event.preventDefault();
         const formData = formSerializer(event);
         await (putRequest("/films/save", formData));
-        //const response = await(putRequest("/films/save",formData));
         alert("Los datos de la película se han guardado correctamente.");
         window.location.href = "/films";
     });
@@ -69,7 +68,6 @@ const deleteCritic = async function () {
     var actionConfirmed = confirm("¿Estás seguro de que desea eliminar esta crítica?");
     if(actionConfirmed) {
         await deleteRequest("/critics/delete/" + idCritic);
-        //const response = await deleteRequest("/critics/delete/" + idCritic);
         alert("La crítica ha sido eliminada");
         location.reload();
     }

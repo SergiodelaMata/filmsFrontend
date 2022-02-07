@@ -48,7 +48,6 @@ const deleteFilm = async function () {
     var actionConfirmed = confirm("¿Estás seguro de que desea eliminar esta película?");
     if(actionConfirmed) {
         await deleteRequest("/films/delete/" + idFilm);
-        //const response = await deleteRequest("/films/delete/" + idFilm);
         alert("La película ha sido eliminado");
         location.reload();
     }

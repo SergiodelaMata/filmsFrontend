@@ -39,7 +39,6 @@ window.addEventListener("DOMContentLoaded", function() {
         {
             const formData = formSerializer(event);
             await (putRequest("/users/save", formData));
-            //const response = await(putRequest("/users/save",formData));
             alert("Los datos del usuario se han guardado correctamente.");
             window.location.href = "/users/profile/" + idUser;
         }
@@ -67,7 +66,6 @@ const deleteCritic = async function () {
     var actionConfirmed = confirm("¿Estás seguro de que desea eliminar esta crítica?");
     if(actionConfirmed) {
         await deleteRequest("/critics/delete/" + idCritic);
-        //const response = await deleteRequest("/critics/delete/" + idCritic);
         alert("La crítica ha sido eliminada");
         location.reload();
     }

@@ -18,7 +18,6 @@ window.addEventListener("DOMContentLoaded", function() {
             var actionConfirmed = confirm("¿Estás seguro de que desea aceptar a este usuario?");
             if(actionConfirmed) {
                 await putRequest("/users/acceptRequest/" + idUser);
-                //const response = await putRequest("/users/acceptRequest/" + idUser);
                 alert("El usuario ha sido aceptado");
                 location.reload();
             }
@@ -31,7 +30,6 @@ window.addEventListener("DOMContentLoaded", function() {
             var actionConfirmed = confirm("¿Estás seguro de que desea eliminar a este usuario?");
             if(actionConfirmed) {
                 await deleteRequest("/users/delete/" + idUser);
-                //const response = await deleteRequest("/users/delete/" + idUser);
                 alert("El usuario ha sido eliminado");
                 window.location.href = "/users";
             }
@@ -44,7 +42,6 @@ window.addEventListener("DOMContentLoaded", function() {
             var actionConfirmed = confirm("¿Estás seguro de que desea hacer administrador a este usuario?");
             if(actionConfirmed) {
                 await putRequest("/users/increaseRol/" + idUser);
-                //const response = await putRequest("/users/increaseRol/" + idUser);
                 alert("El usuario ahora es administrador");
                 location.reload();
             }
@@ -57,7 +54,6 @@ window.addEventListener("DOMContentLoaded", function() {
             var actionConfirmed = confirm("¿Estás seguro de que desea bajar el rol a este usuario?");
             if(actionConfirmed) {
                 await putRequest("/users/decreaseRol/" + idUser);
-                //const response = await putRequest("/users/decreaseRol/" + idUser);
                 alert("El usuario ahora es usuario consultor");
                 location.reload();
             }
@@ -94,7 +90,6 @@ window.addEventListener("DOMContentLoaded", function() {
         {
             const formData = formSerializer(event);
             await (putRequest("/users/save", formData));
-            //const response = await(putRequest("/users/save",formData));
             alert("Los datos del usuario se han guardado correctamente.");
             window.location.href = "/users/" + idUser + "?mode=edit";
         }
@@ -122,7 +117,6 @@ const deleteCritic = async function () {
     var actionConfirmed = confirm("¿Estás seguro de que desea eliminar esta crítica?");
     if(actionConfirmed) {
         await deleteRequest("/critics/delete/" + idCritic);
-        //const response = await deleteRequest("/critics/delete/" + idCritic);
         alert("La crítica ha sido eliminada");
         location.reload();
     }

@@ -48,7 +48,6 @@ const deleteActor = async function () {
     var actionConfirmed = confirm("¿Estás seguro de que desea eliminar a este actor?");
     if(actionConfirmed) {
         await deleteRequest("/actors/delete/" + idActor);
-        //const response = await deleteRequest("/actors/delete/" + idActor);
         alert("El actor ha sido eliminado");
         location.reload();
     }

@@ -56,7 +56,6 @@ const acceptUser = async function () {
     var actionConfirmed = confirm("¿Estás seguro de que desea aceptar a este usuario?");
     if(actionConfirmed) {
         await putRequest("/users/acceptRequest/" + idUser);
-        //const response = await putRequest("/users/acceptRequest/" + idUser);
         alert("El usuario ha sido aceptado");
         location.reload();
     }
@@ -67,7 +66,6 @@ const removeUser = async function () {
     var actionConfirmed = confirm("¿Estás seguro de que desea eliminar a este usuario?");
     if(actionConfirmed) {
         await deleteRequest("/users/delete/" + idUser);
-        //const response = await deleteRequest("/users/delete/" + idUser);
         alert("El usuario ha sido eliminado");
         location.reload();
     }
@@ -78,7 +76,6 @@ const increaseRol = async function () {
     var actionConfirmed = confirm("¿Estás seguro de que desea hacer administrador a este usuario?");
     if(actionConfirmed) {
         await putRequest("/users/increaseRol/" + idUser);
-        //const response = await putRequest("/users/increaseRol/" + idUser);
         alert("El usuario ha sido aceptado");
         location.reload();
     }
@@ -89,7 +86,6 @@ const decreaseRol = async function () {
     var actionConfirmed = confirm("¿Estás seguro de que desea bajar el rol a este usuario?");
     if(actionConfirmed) {
         await putRequest("/users/decreaseRol/" + idUser);
-        //const response = await putRequest("/users/decreaseRol/" + idUser);
         alert("El usuario ha sido aceptado");
         location.reload();
     }
@@ -100,7 +96,6 @@ const deleteUser = async function () {
     var actionConfirmed = confirm("¿Estás seguro de que desea eliminar a este usuario?");
     if(actionConfirmed) {
         await deleteRequest("/users/delete/" + idUser);
-        //const response = await deleteRequest("/users/delete/" + idUser);
         alert("El usuario ha sido eliminado");
         location.reload();
     }

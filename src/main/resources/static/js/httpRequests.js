@@ -13,7 +13,6 @@ async function postRequest(url, data) {
             "Content-type": "application/json; charset=UTF-8",
         },
     });
-    //return await response.json();
 }
 
 async function putRequest(url, data = null) {
@@ -24,12 +23,10 @@ async function putRequest(url, data = null) {
             "Content-type": "application/json; charset=UTF-8",
         },
     });
-    //return await response.json();
 }
 
 async function deleteRequest(url) {
     const response = await fetch(url, {
         method: "DELETE",
     });
-    //return await response.json();
 }
