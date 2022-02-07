@@ -350,6 +350,12 @@ public class FilmController {
     @DeleteMapping("/delete/{idFilm}")
     public String deleteFilm(Model model, @PathVariable("idFilm") Integer idFilm, RedirectAttributes attributes)
     {
+        //Se eliminan primero las distintas críticas que pueda tener la película eliminada
+        List<Critic> criticList = criticService.searchCriticByIdFilm(idFilm);
+        for(int i = 0; i < criticList.size(); i++)
+        {
+            criticService.deleteCritic(criticList.get(i).getIdCritic());
+        }
         filmService.deleteFilm(idFilm);
         attributes.addFlashAttribute("msg", "Se ha borrado la película correctamente.");
         return "films";
