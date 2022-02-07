@@ -76,7 +76,7 @@
                                 <td colspan="1" name="username" th:text = "${critic.getUser().getUsername()}"></td>
                                 <td colspan="1" name="title" th:text = "${film.getFilmFromListByIdFilm(listFilms, critic.getIdFilm()).getTitle()}"></td>
                                 <td colspan="1" name="mark" th:text = "${critic.getMark()}"></td>
-                                <td colspan="1" name="date-critic" th:text = "${critic.getDateCritic()}"></td>
+                                <td colspan="1" name="date-critic" th:text = "${critic.getDateCriticFormat()}"></td>
                                 <td colspan="1" name="image">
                                     <img th:src="${film.getFilmFromListByIdFilm(listFilms, critic.getIdFilm()).getImage()}" class="rounded mx-auto d-block" style="width:80px">
                                 </td>

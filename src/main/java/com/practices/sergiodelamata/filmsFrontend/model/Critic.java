@@ -4,7 +4,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +18,7 @@ public class Critic {
     private User user;
     private String valoration;
     private Integer mark;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateCritic;
 
     public Critic() {}
@@ -35,6 +38,14 @@ public class Critic {
 
     public void setDateCritic(Date dateCritic) {
         this.dateCritic = dateCritic;
+    }
+
+    public String getDateCriticFormat()
+    {
+        String pattern = "dd-MM-yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        String date = simpleDateFormat.format(this.dateCritic);
+        return date;
     }
 
     public Integer getMark() {
