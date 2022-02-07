@@ -12,6 +12,8 @@ public interface IFilmService {
 
     Film searchFilmById(Integer idFilm);
 
+    List<Film> searchFilmsByTitle(String title);
+
     Page<Film> searchFilmsByTitle(String title, Pageable pageable);
 
     Page<Film> searchFilmsByYear(Integer yearInit, Integer yearEnd, Pageable pageable);

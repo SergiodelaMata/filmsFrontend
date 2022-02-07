@@ -55,7 +55,7 @@ public class UserController {
     }
 
     @GetMapping("/{idUser}")
-    public String searchFilmById(Model model, @PathVariable("idUser") Integer idUser,
+    public String searchUserById(Model model, @PathVariable("idUser") Integer idUser,
                                  @RequestParam(name="mode", defaultValue = "request") String mode)
     {
         User user = userService.searchUserById(idUser);
@@ -294,7 +294,7 @@ public class UserController {
 
 
     @DeleteMapping("/delete/{idUser}")
-    public String eliminarUsuario(Model model, @PathVariable("idUser") Integer idUser, RedirectAttributes attributes) {
+    public String deleteUser(Model model, @PathVariable("idUser") Integer idUser, RedirectAttributes attributes) {
         User user = userService.searchUserById(idUser);
         if (user != null) {
             userService.deleteUser(idUser);

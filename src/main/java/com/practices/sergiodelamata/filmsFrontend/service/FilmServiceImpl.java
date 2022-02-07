@@ -35,6 +35,14 @@ public class FilmServiceImpl implements IFilmService{
     }
 
     @Override
+    public List<Film> searchFilmsByTitle(String title)
+    {
+        Film[] films = template.getForObject(urlFilms + "/title/" + title, Film[].class);
+        List<Film> listFilms = Arrays.asList(films);
+        return listFilms;
+    }
+
+    @Override
     public Page<Film> searchFilmsByTitle(String title, Pageable pageable) {
         Film[] films = template.getForObject(urlFilms + "/title/" + title, Film[].class);
         Film film = new Film();

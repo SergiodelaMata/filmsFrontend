@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -44,11 +45,23 @@ public class CriticServiceImpl implements ICriticService{
     }
 
     @Override
-    public Page<Critic> searchCriticByIdFilm(Integer idFilm, Pageable pageable) {
-        Critic critic = new Critic();
+    public List<Critic> searchCriticByIdFilm(Integer idFilm){
         Critic[] critics = template.getForObject(url + "/idFilm/" + idFilm, Critic[].class);
         List<Critic> listCritics = Arrays.asList(critics);
+        return listCritics;
+    }
 
+    @Override
+    public Page<Critic> searchCriticByIdFilms(List<Film> filmList, Pageable pageable) {
+        List<Critic> listCritics = new ArrayList<>();
+        for(int i = 0; i < filmList.size(); i++)
+        {
+            Critic[] critics = template.getForObject(url + "/idFilm/" + filmList.get(i).getIdFilm(), Critic[].class);
+            List<Critic> listCriticsAux = Arrays.asList(critics);
+            listCritics.addAll(listCriticsAux);
+        }
+
+        Critic critic = new Critic();
         Page<Critic> page = critic.getPageCritic(listCritics, pageable);
         return page;
     }
